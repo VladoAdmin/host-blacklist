@@ -93,6 +93,12 @@ export function useAuth() {
     return { error };
   };
 
+  const refreshProfile = useCallback(async () => {
+    if (user) {
+      await fetchProfile(user.id);
+    }
+  }, [user, fetchProfile]);
+
   return {
     user,
     profile,
@@ -101,6 +107,7 @@ export function useAuth() {
     signIn,
     signUp,
     signOut,
+    refreshProfile,
     supabase,
   };
 }
