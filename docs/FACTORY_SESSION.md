@@ -37,6 +37,7 @@
 | TASK-010 Edit/Delete | Coder | coder-TASK-010-v1 | ✅ Done | e132c2f |
 | TASK-011 Dashboard | Coder | coder-TASK-011-v1 | ✅ Done | 4174ba1 |
 | TASK-014 Vercel deploy | Coder | coder-TASK-014-v1 | ✅ Done | host-blacklist.vercel.app |
+| TASK-015 E2E QA | Tester | tester-TASK-015-v1 | ✅ PASS WITH NOTES | 1 ESLint fix (c10ff03) |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
@@ -45,8 +46,8 @@
 
 ## E. Active Phase
 **Fáza:** BUILD — Core Sprint (pokračovanie)  
-**Status:** RUNNING  
-**Aktívny task:** TASK-009 + TASK-012 (parallel) + TASK-013 (parallel)  
+**Status:** DONE  
+**Aktívny task:** DONE — všetky tasky dokončené  
 **Zostávajúce:** TASK-008 → TASK-015 (8 taskov)  
 **Next Gate:** QA_GATE (po TASK-013)  
 **Gate status:** await  
@@ -69,9 +70,40 @@
 | PRD_APPROVAL | APPROVED | Vlado schválil | 2026-03-05 13:00 |
 
 ## H. Final Delivery
-**Status:** IN_PROGRESS  
+**Status:** DONE  
 **URL:** https://host-blacklist.vercel.app  
-**Commit:** 6dc04b2 (latest)  
+**Final Commit:** c10ff03  
+**QA Result:** PASS WITH NOTES  
+
+### Delivered Features:
+- ✅ Landing page (public)
+- ✅ Auth flow (register, login, logout)
+- ✅ Profile settings
+- ✅ Fuzzy search (pg_trgm)
+- ✅ Search UI with debounced input
+- ✅ Guest detail view with reports listing
+- ✅ Add Report form + API (guest upsert)
+- ✅ Edit/Delete own reports
+- ✅ Dashboard (stats, recent reports, quick search)
+- ✅ Flag report (nahlásenie nepravdivého záznamu)
+- ✅ Shared layout, navigation, responsive design
+- ✅ Vercel production deploy
+- ✅ E2E smoke test passed
+
+### Known TODO:
+- ⚠️ Supabase Auth redirect URLs: pridať `https://host-blacklist.vercel.app/**` do Supabase Dashboard → Authentication → URL Configuration → Redirect URLs
+- 💡 Rate limiting, CAPTCHA, email verification (post-MVP)
+
+### Git Log (TASK-008 → TASK-015):
+| Commit | Message |
+|--------|---------|
+| c10ff03 | fix: ESLint prefer-const + FACTORY_SESSION update |
+| 4174ba1 | feat: TASK-011 dashboard |
+| e132c2f | feat: TASK-010 edit and delete own reports |
+| 8da440f | feat: TASK-009 add report form and API |
+| a7f8ffb | feat: TASK-012 flag report functionality |
+| d00bc41 | feat: TASK-013 shared layout, navigation, responsive |
+| ef7456e | feat: TASK-008 guest detail view with reports listing |
 
 ---
-*Aktualizované: 2026-03-05 18:57 UTC*
+*Aktualizované: 2026-03-05 19:25 UTC*
