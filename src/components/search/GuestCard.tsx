@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { AlertTriangle, Mail, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -33,7 +34,8 @@ export function GuestCard({ guest }: GuestCardProps) {
   const matchPercent = Math.round(guest.similarity_score * 100);
 
   return (
-    <Card className="transition-shadow hover:shadow-md py-0 overflow-hidden">
+    <Link href={`/guest/${guest.id}`} className="block">
+    <Card className="transition-shadow hover:shadow-md py-0 overflow-hidden cursor-pointer">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 min-w-0">
@@ -62,5 +64,6 @@ export function GuestCard({ guest }: GuestCardProps) {
         </div>
       </CardContent>
     </Card>
+    </Link>
   );
 }

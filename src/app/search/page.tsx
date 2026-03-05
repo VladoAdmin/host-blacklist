@@ -1,17 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/providers";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { SearchBar } from "@/components/search/SearchBar";
 import { GuestList } from "@/components/search/GuestList";
-import { Button } from "@/components/ui/button";
 import type { Guest } from "@/components/search/GuestCard";
 
 export default function SearchPage() {
-  const { user, profile, signOut, loading: authLoading } = useAuthContext();
-  const router = useRouter();
+  const { loading: authLoading } = useAuthContext();
 
   const [query, setQuery] = useState("");
   const [guests, setGuests] = useState<Guest[]>([]);
@@ -19,12 +16,6 @@ export default function SearchPage() {
   const [hasSearched, setHasSearched] = useState(false);
 
   const debouncedQuery = useDebounce(query, 300);
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push("/");
-    router.refresh();
-  };
 
   const searchGuests = useCallback(async (q: string) => {
     const trimmed = q.trim();
@@ -62,28 +53,15 @@ export default function SearchPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center py-20">
         <p className="text-muted-foreground">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Host Blacklist</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {profile?.full_name || user?.email}
-            </span>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
-      <main className="max-w-3xl mx-auto px-4 py-8">
+    <div className="bg-gray-50">
+      <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-1">Search Guests</h2>
           <p className="text-sm text-muted-foreground">
@@ -103,7 +81,7 @@ export default function SearchPage() {
           query={debouncedQuery}
           hasSearched={hasSearched}
         />
-      </main>
+      </div>
     </div>
   );
 }
