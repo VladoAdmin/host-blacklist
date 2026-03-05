@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
+import Link from "next/link";
 import {
   ArrowLeft,
   AlertTriangle,
@@ -26,6 +27,7 @@ import {
   ChevronDown,
   ChevronUp,
   Flag,
+  Pencil,
 } from "lucide-react";
 
 interface GuestData {
@@ -222,6 +224,19 @@ function ReportCard({
                 <span className="truncate max-w-[200px]">
                   {report.property_name}
                 </span>
+              )}
+              {currentUserId && isOwnReport && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 text-xs text-muted-foreground hover:text-blue-600"
+                  asChild
+                >
+                  <Link href={`/report/${report.id}/edit`}>
+                    <Pencil className="size-3 mr-1" />
+                    Edit
+                  </Link>
+                </Button>
               )}
               {currentUserId && !isOwnReport && (
                 <Button

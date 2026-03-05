@@ -1,16 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
+import { VALID_INCIDENT_TYPES, VALID_PLATFORMS } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
-
-const VALID_INCIDENT_TYPES = [
-  "damage",
-  "theft",
-  "noise",
-  "fraud",
-  "no_show",
-  "other",
-] as const;
-
-const VALID_PLATFORMS = ["Airbnb", "Booking", "Direct", "Other"] as const;
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -69,9 +59,7 @@ export async function POST(request: NextRequest) {
 
   if (
     !incident_type ||
-    !VALID_INCIDENT_TYPES.includes(
-      incident_type as (typeof VALID_INCIDENT_TYPES)[number]
-    )
+    !VALID_INCIDENT_TYPES.includes(incident_type)
   ) {
     errors.push("Valid incident type is required");
   }
@@ -98,7 +86,7 @@ export async function POST(request: NextRequest) {
 
   if (
     platform &&
-    !VALID_PLATFORMS.includes(platform as (typeof VALID_PLATFORMS)[number])
+    !VALID_PLATFORMS.includes(platform)
   ) {
     errors.push("Invalid platform");
   }

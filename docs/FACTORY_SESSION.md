@@ -33,6 +33,7 @@
 | TASK-008 Guest detail | Coder | coder-TASK-008-v1 | ✅ Done | ef7456e |
 | TASK-013 Layout/nav | Coder | coder-TASK-013-v1 | ✅ Done | d00bc41 |
 | TASK-012 Flag report | Coder | coder-TASK-012-v1 | ✅ Done | a7f8ffb |
+| TASK-009 Add Report | Coder | coder-TASK-009-v1 | ✅ Done | 8da440f |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
