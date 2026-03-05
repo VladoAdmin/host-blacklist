@@ -30,6 +30,7 @@
 | TASK-006 DB search functions | Coder | coder-TASK-006 | ✅ Done | 56ca3aa, 4019cf1 |
 | TASK-007 Search UI | Coder | coder-TASK-007 | ✅ Done | 4019cf1 |
 | QA Review | Tester+Coder | factory-orch-qa-test | ✅ Done | 6dc04b2 (3 bugy opravené) |
+| TASK-008 Guest detail | Coder | coder-TASK-008-v1 | ✅ Done | ef7456e |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
@@ -39,7 +40,7 @@
 ## E. Active Phase
 **Fáza:** BUILD — Core Sprint (pokračovanie)  
 **Status:** RUNNING  
-**Aktívny task:** TASK-008 (Guest detail view)  
+**Aktívny task:** TASK-009 + TASK-012 (parallel) + TASK-013 (parallel)  
 **Zostávajúce:** TASK-008 → TASK-015 (8 taskov)  
 **Next Gate:** QA_GATE (po TASK-013)  
 **Gate status:** await  

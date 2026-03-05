@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthContext } from "@/app/providers";
 import { Button } from "@/components/ui/button";
@@ -20,8 +19,7 @@ import { toast } from "@/components/ui/toast";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
 export default function SettingsPage() {
-  const { user, profile, loading: authLoading, signOut, refreshProfile } = useAuthContext();
-  const router = useRouter();
+  const { user, profile, loading: authLoading, refreshProfile } = useAuthContext();
 
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -44,12 +42,6 @@ export default function SettingsPage() {
       setFormLoaded(true);
     }
   }, [profile, formLoaded]);
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push("/");
-    router.refresh();
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,29 +87,15 @@ export default function SettingsPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center py-20">
         <Loader2 className="size-6 animate-spin text-gray-400" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Host Blacklist</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {profile?.full_name || user?.email}
-            </span>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-2xl mx-auto px-4 py-8">
+    <div className="bg-gray-50">
+      <div className="max-w-2xl mx-auto px-4 py-8">
         <Link
           href="/dashboard"
           className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6"
@@ -248,7 +226,7 @@ export default function SettingsPage() {
             </CardFooter>
           </form>
         </Card>
-      </main>
+      </div>
     </div>
   );
 }
