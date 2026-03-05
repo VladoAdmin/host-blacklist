@@ -23,11 +23,14 @@
 |------|-------|-------|--------|---------------|
 | PRD | Architect | architect-host-blacklist | ✅ Done | PRD.md, TASKS.md v docs/ |
 | Auth flow (TASK-004) | Coder | coder-TASK-004-v1 | ✅ Done | bf5cba1, 5c7c625 |
+| QA Review | Tester | tester-qa-review-v1 | ✅ FAIL | 2 broken Radix imports, 6 missing API routes (expected - future tasks) |
+| Fix Radix imports | Coder | coder-fix-radix-imports-v1 | 🔄 Running | runId: 4b53e4e3, session: 1d162b5f |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
 |---|-----|-------|----------|
 | Františka | Františka | Priame spawny miesto orchestrátora | Neúspech, opravujem |
+| Tester | Coder | 2 broken Radix UI imports (label.tsx, button.tsx) | 🔄 Fixing |
 
 ## E. Active Phase
 **Fáza:** BUILD — Core Sprint  
