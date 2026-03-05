@@ -35,6 +35,7 @@
 | TASK-012 Flag report | Coder | coder-TASK-012-v1 | ✅ Done | a7f8ffb |
 | TASK-009 Add Report | Coder | coder-TASK-009-v1 | ✅ Done | 8da440f |
 | TASK-010 Edit/Delete | Coder | coder-TASK-010-v1 | ✅ Done | e132c2f |
+| TASK-011 Dashboard | Coder | coder-TASK-011-v1 | ✅ Done | 4174ba1 |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
