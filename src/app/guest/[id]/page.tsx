@@ -7,6 +7,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { toast } from "@/components/ui/toast";
+import {
   ArrowLeft,
   AlertTriangle,
   Mail,
@@ -16,6 +25,7 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
+  Flag,
 } from "lucide-react";
 
 interface GuestData {
@@ -37,6 +47,7 @@ interface ReportData {
   platform: string;
   created_at: string;
   reporter: string;
+  reporter_id: string;
 }
 
 const INCIDENT_COLORS: Record<string, string> = {
@@ -88,8 +99,18 @@ function formatIncidentType(type: string): string {
   return type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function ReportCard({ report }: { report: ReportData }) {
+function ReportCard({
+  report,
+  currentUserId,
+}: {
+  report: ReportData;
+  currentUserId: string | null;
+}) {
   const [expanded, setExpanded] = useState(false);
+  const [flagDialogOpen, setFlagDialogOpen] = useState(false);
+  const [flagReason, setFlagReason] = useState("");
+  const [flagSubmitting, setFlagSubmitting] = useState(false);
+
   const incidentColor =
     INCIDENT_COLORS[report.incident_type] || INCIDENT_COLORS.other;
   const platformKey = report.platform?.toLowerCase() || "other";
@@ -101,69 +122,169 @@ function ReportCard({ report }: { report: ReportData }) {
       ? report.description.slice(0, 200) + "…"
       : report.description;
 
+  const isOwnReport = currentUserId === report.reporter_id;
+
+  async function handleFlagSubmit() {
+    if (flagReason.trim().length < 10) return;
+
+    setFlagSubmitting(true);
+    try {
+      const res = await fetch("/api/flags", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          report_id: report.id,
+          reason: flagReason.trim(),
+        }),
+      });
+
+      if (res.status === 409) {
+        toast("error", "You already flagged this report");
+        setFlagDialogOpen(false);
+        setFlagReason("");
+        return;
+      }
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast("error", data.error || "Failed to submit flag");
+        return;
+      }
+
+      toast("success", "Thank you, we'll review this report");
+      setFlagDialogOpen(false);
+      setFlagReason("");
+    } catch {
+      toast("error", "Something went wrong. Please try again.");
+    } finally {
+      setFlagSubmitting(false);
+    }
+  }
+
   return (
-    <Card className="py-0 overflow-hidden">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <Badge
-              variant="outline"
-              className={`text-xs font-medium ${incidentColor}`}
-            >
-              {formatIncidentType(report.incident_type)}
-            </Badge>
-            <Badge
-              variant="outline"
-              className={`text-xs font-medium ${platformColor}`}
-            >
-              {report.platform || "Other"}
-            </Badge>
-          </div>
-          <SeverityDots severity={report.severity} />
-        </div>
-
-        <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
-          <Calendar className="size-3.5 shrink-0" />
-          <span>{formatDate(report.incident_date)}</span>
-        </div>
-
-        {report.description && (
-          <div className="mb-2">
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {displayDescription}
-            </p>
-            {needsTruncation && (
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 mt-1 font-medium"
+    <>
+      <Card className="py-0 overflow-hidden">
+        <CardContent className="p-4">
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge
+                variant="outline"
+                className={`text-xs font-medium ${incidentColor}`}
               >
-                {expanded ? (
-                  <>
-                    Show less <ChevronUp className="size-3" />
-                  </>
-                ) : (
-                  <>
-                    Read more <ChevronDown className="size-3" />
-                  </>
-                )}
-              </button>
+                {formatIncidentType(report.incident_type)}
+              </Badge>
+              <Badge
+                variant="outline"
+                className={`text-xs font-medium ${platformColor}`}
+              >
+                {report.platform || "Other"}
+              </Badge>
+            </div>
+            <SeverityDots severity={report.severity} />
+          </div>
+
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
+            <Calendar className="size-3.5 shrink-0" />
+            <span>{formatDate(report.incident_date)}</span>
+          </div>
+
+          {report.description && (
+            <div className="mb-2">
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {displayDescription}
+              </p>
+              {needsTruncation && (
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 mt-1 font-medium"
+                >
+                  {expanded ? (
+                    <>
+                      Show less <ChevronUp className="size-3" />
+                    </>
+                  ) : (
+                    <>
+                      Read more <ChevronDown className="size-3" />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+            <div className="flex items-center gap-1.5">
+              <User className="size-3 shrink-0" />
+              <span>{report.reporter}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {report.property_name && (
+                <span className="truncate max-w-[200px]">
+                  {report.property_name}
+                </span>
+              )}
+              {currentUserId && !isOwnReport && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 text-xs text-muted-foreground hover:text-red-600"
+                  onClick={() => setFlagDialogOpen(true)}
+                >
+                  <Flag className="size-3 mr-1" />
+                  Report as false
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog open={flagDialogOpen} onOpenChange={setFlagDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Report as false</DialogTitle>
+            <DialogDescription>
+              If you believe this report is inaccurate or false, please explain
+              why. Our team will review your submission.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-2">
+            <textarea
+              className="w-full min-h-[100px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
+              placeholder="Describe why you believe this report is false (min. 10 characters)..."
+              value={flagReason}
+              onChange={(e) => setFlagReason(e.target.value)}
+              disabled={flagSubmitting}
+            />
+            {flagReason.length > 0 && flagReason.trim().length < 10 && (
+              <p className="text-xs text-red-500 mt-1">
+                Please enter at least 10 characters ({flagReason.trim().length}
+                /10)
+              </p>
             )}
           </div>
-        )}
-
-        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
-          <div className="flex items-center gap-1.5">
-            <User className="size-3 shrink-0" />
-            <span>{report.reporter}</span>
-          </div>
-          {report.property_name && (
-            <span className="truncate max-w-[200px]">
-              {report.property_name}
-            </span>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setFlagDialogOpen(false);
+                setFlagReason("");
+              }}
+              disabled={flagSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleFlagSubmit}
+              disabled={flagSubmitting || flagReason.trim().length < 10}
+            >
+              {flagSubmitting ? "Submitting..." : "Submit"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
@@ -324,7 +445,11 @@ export default function GuestDetailPage() {
         ) : (
           <div className="flex flex-col gap-3">
             {reports.map((report) => (
-              <ReportCard key={report.id} report={report} />
+              <ReportCard
+                key={report.id}
+                report={report}
+                currentUserId={user?.id ?? null}
+              />
             ))}
           </div>
         )}

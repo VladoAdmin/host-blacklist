@@ -115,6 +115,7 @@ export async function GET(
     platform: r.platform,
     created_at: r.created_at,
     reporter: anonymizeReporter(profilesMap.get(r.reporter_id) ?? null),
+    reporter_id: r.reporter_id,
   }));
 
   return NextResponse.json({
