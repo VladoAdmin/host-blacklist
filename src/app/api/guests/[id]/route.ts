@@ -73,7 +73,7 @@ export async function GET(
     ...new Set((reports || []).map((r) => r.reporter_id).filter(Boolean)),
   ];
 
-  let profilesMap = new Map<
+  const profilesMap = new Map<
     string,
     { full_name: string | null; city: string | null; country: string | null }
   >();

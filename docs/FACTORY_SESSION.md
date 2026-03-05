@@ -36,6 +36,7 @@
 | TASK-009 Add Report | Coder | coder-TASK-009-v1 | ✅ Done | 8da440f |
 | TASK-010 Edit/Delete | Coder | coder-TASK-010-v1 | ✅ Done | e132c2f |
 | TASK-011 Dashboard | Coder | coder-TASK-011-v1 | ✅ Done | 4174ba1 |
+| TASK-014 Vercel deploy | Coder | coder-TASK-014-v1 | ✅ Done | host-blacklist.vercel.app |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
