@@ -31,6 +31,8 @@
 | TASK-007 Search UI | Coder | coder-TASK-007 | ✅ Done | 4019cf1 |
 | QA Review | Tester+Coder | factory-orch-qa-test | ✅ Done | 6dc04b2 (3 bugy opravené) |
 | TASK-008 Guest detail | Coder | coder-TASK-008-v1 | ✅ Done | ef7456e |
+| TASK-013 Layout/nav | Coder | coder-TASK-013-v1 | ✅ Done | d00bc41 |
+| TASK-012 Flag report | Coder | coder-TASK-012-v1 | ✅ Done | a7f8ffb |
 
 ## D. Escalations
 | Z | Na | Dôvod | Výsledok |
