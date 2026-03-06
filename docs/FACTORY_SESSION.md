@@ -101,7 +101,8 @@
 | PROJECT_SNAPSHOT | Scanner | scanner-host-blacklist-v2 | ✅ Done | PROJECT_SNAPSHOT.md |
 | TASK-101 Google OAuth | Coder | coder-TASK-101-v1 | ✅ Done | commit 3e6699e |
 | TASK-102 Facebook Integration | Coder | coder-TASK-102-v1 | ✅ Done | commit ccb68a9 |
-| TASK-103 i18n Default SK | Coder | coder-TASK-103-v1 | 🔄 In Progress | runId: 3d59a77a-e997-47c2-ba0f-6fd8b51835f5 |
+| TASK-103 i18n Default SK | Coder | coder-TASK-103-v1 | ✅ Done | commit cae2611 |
+| TASK-104 PWA Full Support | Coder | coder-TASK-104-v1 | 🔄 In Progress | runId: PENDING |
 
 ### I.4 Current Gate
 **Gate:** DELTA_APPROVAL — ✅ SCHVÁLENÉ 2026-03-06
