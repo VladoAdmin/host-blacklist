@@ -8,10 +8,10 @@ export const INCIDENT_TYPES = [
 ] as const;
 
 export const PLATFORMS = [
-  { value: "Airbnb", label: "Airbnb" },
-  { value: "Booking", label: "Booking.com" },
-  { value: "Direct", label: "Direct Booking" },
-  { value: "Other", label: "Other" },
+  { value: "airbnb", label: "Airbnb" },
+  { value: "booking", label: "Booking.com" },
+  { value: "direct", label: "Direct" },
+  { value: "other", label: "Other" },
 ] as const;
 
 export const SEVERITY_LABELS = [
