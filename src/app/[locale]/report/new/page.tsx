@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { useAuthContext } from "@/app/providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,11 @@ import { AlertTriangle, Loader2 } from "lucide-react";
 export default function NewReportPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuthContext();
+  const t = useTranslations("report");
+  const tIncident = useTranslations("incidentTypes");
+  const tPlatform = useTranslations("platforms");
+  const tSeverity = useTranslations("severityLabels");
+  const tCommon = useTranslations("common");
 
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
@@ -35,9 +41,8 @@ export default function NewReportPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Redirect to login if not authenticated
   if (!authLoading && !user) {
-    router.push("/login?redirectTo=/report/new");
+    router.push("/login?redirectTo=/report/new" as "/login");
     return null;
   }
 
@@ -46,7 +51,7 @@ export default function NewReportPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-3">
           <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          <p className="text-sm text-muted-foreground">Loading...</p>
+          <p className="text-sm text-muted-foreground">{tCommon("loading")}</p>
         </div>
       </div>
     );
@@ -56,21 +61,20 @@ export default function NewReportPage() {
     e.preventDefault();
     setError(null);
 
-    // Client-side validation
     if (!guestName.trim()) {
-      setError("Guest name is required");
+      setError(t("guestNameRequired"));
       return;
     }
     if (!incidentType) {
-      setError("Please select an incident type");
+      setError(t("incidentTypeRequired"));
       return;
     }
     if (description.trim().length < 10) {
-      setError("Description must be at least 10 characters");
+      setError(t("descriptionMinError"));
       return;
     }
     if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) {
-      setError("Please enter a valid email address");
+      setError(t("invalidEmail"));
       return;
     }
 
@@ -97,19 +101,19 @@ export default function NewReportPage() {
 
       if (!res.ok) {
         if (res.status === 409) {
-          setError("You have already submitted a report for this guest");
+          setError(t("alreadyReported"));
         } else if (res.status === 401) {
-          router.push("/login?redirectTo=/report/new");
+          router.push("/login?redirectTo=/report/new" as "/login");
         } else {
-          setError(data.error || "Something went wrong");
+          setError(data.error || tCommon("error"));
         }
         return;
       }
 
-      toast("success", "Report submitted successfully");
-      router.push(`/guest/${data.guest_id}`);
+      toast("success", t("submitSuccess"));
+      router.push(`/guest/${data.guest_id}` as "/dashboard");
     } catch {
-      setError("Failed to submit report. Please try again.");
+      setError(tCommon("error"));
     } finally {
       setSubmitting(false);
     }
@@ -119,10 +123,9 @@ export default function NewReportPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold">Report a Guest</h1>
+          <h1 className="text-2xl font-bold">{t("title")}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Help the community by sharing your experience with a problematic
-            guest.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -139,17 +142,17 @@ export default function NewReportPage() {
               {/* Guest Information Section */}
               <div>
                 <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Guest Information
+                  {t("guestInfo")}
                 </h2>
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="guest_name">
-                      Guest Name <span className="text-red-500">*</span>
+                      {t("guestName")} <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="guest_name"
                       type="text"
-                      placeholder="Full name of the guest"
+                      placeholder={t("guestNamePlaceholder")}
                       value={guestName}
                       onChange={(e) => setGuestName(e.target.value)}
                       required
@@ -159,25 +162,25 @@ export default function NewReportPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="guest_email">Guest Email</Label>
+                      <Label htmlFor="guest_email">{t("guestEmail")}</Label>
                       <Input
                         id="guest_email"
                         type="email"
-                        placeholder="guest@example.com"
+                        placeholder={t("guestEmailPlaceholder")}
                         value={guestEmail}
                         onChange={(e) => setGuestEmail(e.target.value)}
                         className="mt-1.5"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Helps match reports for the same guest
+                        {t("guestEmailHelp")}
                       </p>
                     </div>
                     <div>
-                      <Label htmlFor="guest_phone">Guest Phone</Label>
+                      <Label htmlFor="guest_phone">{t("guestPhone")}</Label>
                       <Input
                         id="guest_phone"
                         type="tel"
-                        placeholder="+1 234 567 890"
+                        placeholder={t("guestPhonePlaceholder")}
                         value={guestPhone}
                         onChange={(e) => setGuestPhone(e.target.value)}
                         className="mt-1.5"
@@ -190,32 +193,32 @@ export default function NewReportPage() {
               {/* Incident Details Section */}
               <div>
                 <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Incident Details
+                  {t("incidentDetails")}
                 </h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="incident_type">
-                        Incident Type <span className="text-red-500">*</span>
+                        {t("incidentType")} <span className="text-red-500">*</span>
                       </Label>
                       <Select
                         value={incidentType}
                         onValueChange={setIncidentType}
                       >
                         <SelectTrigger id="incident_type" className="mt-1.5">
-                          <SelectValue placeholder="Select type" />
+                          <SelectValue placeholder={t("incidentTypePlaceholder")} />
                         </SelectTrigger>
                         <SelectContent>
                           {INCIDENT_TYPES.map((type) => (
                             <SelectItem key={type.value} value={type.value}>
-                              {type.label}
+                              {tIncident(type.value as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="incident_date">Incident Date</Label>
+                      <Label htmlFor="incident_date">{t("incidentDate")}</Label>
                       <Input
                         id="incident_date"
                         type="date"
@@ -229,7 +232,7 @@ export default function NewReportPage() {
 
                   {/* Severity */}
                   <div>
-                    <Label>Severity</Label>
+                    <Label>{t("severity")}</Label>
                     <div className="flex items-center gap-2 mt-2">
                       {SEVERITY_LABELS.map((s) => (
                         <button
@@ -247,7 +250,7 @@ export default function NewReportPage() {
                           }`}
                         >
                           <span className="font-semibold">{s.value}</span>
-                          <span className="hidden sm:inline">{s.label}</span>
+                          <span className="hidden sm:inline">{tSeverity(String(s.value) as "1" | "2" | "3" | "4" | "5")}</span>
                         </button>
                       ))}
                     </div>
@@ -255,11 +258,11 @@ export default function NewReportPage() {
 
                   <div>
                     <Label htmlFor="description">
-                      Description <span className="text-red-500">*</span>
+                      {t("description")} <span className="text-red-500">*</span>
                     </Label>
                     <Textarea
                       id="description"
-                      placeholder="Describe what happened in detail (minimum 10 characters)..."
+                      placeholder={t("descriptionPlaceholder")}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       required
@@ -267,7 +270,7 @@ export default function NewReportPage() {
                       className="mt-1.5 resize-none"
                     />
                     <p className="text-xs text-muted-foreground mt-1 text-right">
-                      {description.trim().length}/10 min characters
+                      {t("descriptionCounter", { count: description.trim().length })}
                     </p>
                   </div>
                 </div>
@@ -276,30 +279,30 @@ export default function NewReportPage() {
               {/* Property & Platform Section */}
               <div>
                 <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Booking Details
+                  {t("bookingDetails")}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="property_name">Property Name</Label>
+                    <Label htmlFor="property_name">{t("propertyName")}</Label>
                     <Input
                       id="property_name"
                       type="text"
-                      placeholder="Where did this happen?"
+                      placeholder={t("propertyNamePlaceholder")}
                       value={propertyName}
                       onChange={(e) => setPropertyName(e.target.value)}
                       className="mt-1.5"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="platform">Platform</Label>
+                    <Label htmlFor="platform">{t("platform")}</Label>
                     <Select value={platform} onValueChange={setPlatform}>
                       <SelectTrigger id="platform" className="mt-1.5">
-                        <SelectValue placeholder="Select platform" />
+                        <SelectValue placeholder={t("platformPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {PLATFORMS.map((p) => (
                           <SelectItem key={p.value} value={p.value}>
-                            {p.label}
+                            {tPlatform(p.value as "airbnb" | "booking" | "direct" | "other")}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -319,10 +322,10 @@ export default function NewReportPage() {
                   {submitting ? (
                     <>
                       <Loader2 className="size-4 mr-2 animate-spin" />
-                      Submitting...
+                      {t("submitting")}
                     </>
                   ) : (
-                    "Submit Report"
+                    t("submitReport")
                   )}
                 </Button>
               </div>

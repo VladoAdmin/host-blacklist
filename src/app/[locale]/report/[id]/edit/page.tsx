@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { useAuthContext } from "@/app/providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +50,11 @@ export default function EditReportPage() {
   const params = useParams();
   const router = useRouter();
   const { user, loading: authLoading } = useAuthContext();
+  const t = useTranslations("report");
+  const tIncident = useTranslations("incidentTypes");
+  const tPlatform = useTranslations("platforms");
+  const tSeverity = useTranslations("severityLabels");
+  const tCommon = useTranslations("common");
 
   const reportId = params.id as string;
 
@@ -57,7 +64,6 @@ export default function EditReportPage() {
   const [error, setError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
-  // Form state
   const [incidentType, setIncidentType] = useState("");
   const [incidentDate, setIncidentDate] = useState("");
   const [severity, setSeverity] = useState(3);
@@ -72,7 +78,7 @@ export default function EditReportPage() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      router.push(`/login?redirectTo=/report/${reportId}/edit`);
+      router.push(`/login?redirectTo=/report/${reportId}/edit` as "/login");
       return;
     }
 
@@ -81,21 +87,21 @@ export default function EditReportPage() {
         const res = await fetch(`/api/reports/${reportId}`);
 
         if (res.status === 401) {
-          router.push(`/login?redirectTo=/report/${reportId}/edit`);
+          router.push(`/login?redirectTo=/report/${reportId}/edit` as "/login");
           return;
         }
         if (res.status === 403) {
-          setError("You don't have permission to edit this report");
+          setError(t("editPermission"));
           setLoading(false);
           return;
         }
         if (res.status === 404) {
-          setError("Report not found");
+          setError(t("notFoundError"));
           setLoading(false);
           return;
         }
         if (!res.ok) {
-          setError("Failed to load report");
+          setError(tCommon("error"));
           setLoading(false);
           return;
         }
@@ -105,7 +111,6 @@ export default function EditReportPage() {
         setReport(r);
         setGuest(data.guest);
 
-        // Populate form
         setIncidentType(r.incident_type);
         setIncidentDate(r.incident_date || "");
         setSeverity(r.severity);
@@ -113,25 +118,25 @@ export default function EditReportPage() {
         setPropertyName(r.property_name || "");
         setPlatform(r.platform || "");
       } catch {
-        setError("Something went wrong");
+        setError(tCommon("error"));
       } finally {
         setLoading(false);
       }
     }
 
     fetchReport();
-  }, [reportId, user, authLoading, router]);
+  }, [reportId, user, authLoading, router, t, tCommon]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormError(null);
 
     if (!incidentType) {
-      setFormError("Please select an incident type");
+      setFormError(t("incidentTypeRequired"));
       return;
     }
     if (description.trim().length < 10) {
-      setFormError("Description must be at least 10 characters");
+      setFormError(t("descriptionMinError"));
       return;
     }
 
@@ -152,20 +157,20 @@ export default function EditReportPage() {
       });
 
       if (res.status === 403) {
-        setFormError("You don't have permission to edit this report");
+        setFormError(t("editPermission"));
         return;
       }
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setFormError(data.error || "Failed to update report");
+        setFormError(data.error || tCommon("error"));
         return;
       }
 
-      toast("success", "Report updated successfully");
+      toast("success", t("updateSuccess"));
       router.push("/dashboard");
     } catch {
-      setFormError("Failed to update report. Please try again.");
+      setFormError(tCommon("error"));
     } finally {
       setSubmitting(false);
     }
@@ -180,21 +185,21 @@ export default function EditReportPage() {
       });
 
       if (res.status === 403) {
-        toast("error", "You don't have permission to delete this report");
+        toast("error", t("deletePermission"));
         setDeleteDialogOpen(false);
         return;
       }
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        toast("error", data.error || "Failed to delete report");
+        toast("error", data.error || tCommon("error"));
         return;
       }
 
-      toast("success", "Report deleted successfully");
+      toast("success", t("deleteSuccess"));
       router.push("/dashboard");
     } catch {
-      toast("error", "Failed to delete report. Please try again.");
+      toast("error", tCommon("error"));
     } finally {
       setDeleting(false);
       setDeleteDialogOpen(false);
@@ -206,7 +211,7 @@ export default function EditReportPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-3">
           <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          <p className="text-sm text-muted-foreground">Loading report...</p>
+          <p className="text-sm text-muted-foreground">{t("loadingReport")}</p>
         </div>
       </div>
     );
@@ -225,7 +230,7 @@ export default function EditReportPage() {
               className="mt-4"
               onClick={() => router.push("/dashboard")}
             >
-              Back to Dashboard
+              {t("backToDashboard")}
             </Button>
           </div>
         </div>
@@ -240,9 +245,9 @@ export default function EditReportPage() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Edit Report</h1>
+            <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Update your report details below.
+              {t("editSubtitle")}
             </p>
           </div>
           <Button
@@ -252,11 +257,10 @@ export default function EditReportPage() {
             onClick={() => setDeleteDialogOpen(true)}
           >
             <Trash2 className="size-4 mr-1.5" />
-            Delete
+            {tCommon("delete")}
           </Button>
         </div>
 
-        {/* Guest info (read-only) */}
         {guest && (
           <div className="mb-6 flex items-center gap-3 rounded-lg border bg-muted/30 px-4 py-3">
             <User className="size-4 text-muted-foreground shrink-0" />
@@ -284,32 +288,32 @@ export default function EditReportPage() {
               {/* Incident Details */}
               <div>
                 <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Incident Details
+                  {t("incidentDetails")}
                 </h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="incident_type">
-                        Incident Type <span className="text-red-500">*</span>
+                        {t("incidentType")} <span className="text-red-500">*</span>
                       </Label>
                       <Select
                         value={incidentType}
                         onValueChange={setIncidentType}
                       >
                         <SelectTrigger id="incident_type" className="mt-1.5">
-                          <SelectValue placeholder="Select type" />
+                          <SelectValue placeholder={t("incidentTypePlaceholder")} />
                         </SelectTrigger>
                         <SelectContent>
                           {INCIDENT_TYPES.map((type) => (
                             <SelectItem key={type.value} value={type.value}>
-                              {type.label}
+                              {tIncident(type.value as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="incident_date">Incident Date</Label>
+                      <Label htmlFor="incident_date">{t("incidentDate")}</Label>
                       <Input
                         id="incident_date"
                         type="date"
@@ -321,9 +325,8 @@ export default function EditReportPage() {
                     </div>
                   </div>
 
-                  {/* Severity */}
                   <div>
-                    <Label>Severity</Label>
+                    <Label>{t("severity")}</Label>
                     <div className="flex items-center gap-2 mt-2">
                       {SEVERITY_LABELS.map((s) => (
                         <button
@@ -341,7 +344,7 @@ export default function EditReportPage() {
                           }`}
                         >
                           <span className="font-semibold">{s.value}</span>
-                          <span className="hidden sm:inline">{s.label}</span>
+                          <span className="hidden sm:inline">{tSeverity(String(s.value) as "1" | "2" | "3" | "4" | "5")}</span>
                         </button>
                       ))}
                     </div>
@@ -349,11 +352,11 @@ export default function EditReportPage() {
 
                   <div>
                     <Label htmlFor="description">
-                      Description <span className="text-red-500">*</span>
+                      {t("description")} <span className="text-red-500">*</span>
                     </Label>
                     <Textarea
                       id="description"
-                      placeholder="Describe what happened in detail (minimum 10 characters)..."
+                      placeholder={t("descriptionPlaceholder")}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       required
@@ -361,7 +364,7 @@ export default function EditReportPage() {
                       className="mt-1.5 resize-none"
                     />
                     <p className="text-xs text-muted-foreground mt-1 text-right">
-                      {description.trim().length}/10 min characters
+                      {t("descriptionCounter", { count: description.trim().length })}
                     </p>
                   </div>
                 </div>
@@ -370,30 +373,30 @@ export default function EditReportPage() {
               {/* Booking Details */}
               <div>
                 <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Booking Details
+                  {t("bookingDetails")}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="property_name">Property Name</Label>
+                    <Label htmlFor="property_name">{t("propertyName")}</Label>
                     <Input
                       id="property_name"
                       type="text"
-                      placeholder="Where did this happen?"
+                      placeholder={t("propertyNamePlaceholder")}
                       value={propertyName}
                       onChange={(e) => setPropertyName(e.target.value)}
                       className="mt-1.5"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="platform">Platform</Label>
+                    <Label htmlFor="platform">{t("platform")}</Label>
                     <Select value={platform} onValueChange={setPlatform}>
                       <SelectTrigger id="platform" className="mt-1.5">
-                        <SelectValue placeholder="Select platform" />
+                        <SelectValue placeholder={t("platformPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {PLATFORMS.map((p) => (
                           <SelectItem key={p.value} value={p.value}>
-                            {p.label}
+                            {tPlatform(p.value as "airbnb" | "booking" | "direct" | "other")}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -411,7 +414,7 @@ export default function EditReportPage() {
                   className="flex-1"
                   size="lg"
                 >
-                  Cancel
+                  {tCommon("cancel")}
                 </Button>
                 <Button
                   type="submit"
@@ -422,10 +425,10 @@ export default function EditReportPage() {
                   {submitting ? (
                     <>
                       <Loader2 className="size-4 mr-2 animate-spin" />
-                      Saving...
+                      {t("saving")}
                     </>
                   ) : (
-                    "Save Changes"
+                    t("saveChanges")
                   )}
                 </Button>
               </div>
@@ -434,14 +437,12 @@ export default function EditReportPage() {
         </Card>
       </div>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete Report</DialogTitle>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this report? This action cannot be
-              undone.
+              {t("deleteConfirm")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -450,7 +451,7 @@ export default function EditReportPage() {
               onClick={() => setDeleteDialogOpen(false)}
               disabled={deleting}
             >
-              Cancel
+              {tCommon("cancel")}
             </Button>
             <Button
               variant="destructive"
@@ -460,10 +461,10 @@ export default function EditReportPage() {
               {deleting ? (
                 <>
                   <Loader2 className="size-4 mr-2 animate-spin" />
-                  Deleting...
+                  {t("deleting")}
                 </>
               ) : (
-                "Delete"
+                tCommon("delete")
               )}
             </Button>
           </DialogFooter>

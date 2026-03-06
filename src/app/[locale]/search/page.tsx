@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useAuthContext } from "@/app/providers";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { SearchBar } from "@/components/search/SearchBar";
@@ -9,6 +10,8 @@ import type { Guest } from "@/components/search/GuestCard";
 
 export default function SearchPage() {
   const { loading: authLoading } = useAuthContext();
+  const t = useTranslations("search");
+  const tCommon = useTranslations("common");
 
   const [query, setQuery] = useState("");
   const [guests, setGuests] = useState<Guest[]>([]);
@@ -54,7 +57,7 @@ export default function SearchPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-muted-foreground">Loading...</p>
+        <p className="text-muted-foreground">{tCommon("loading")}</p>
       </div>
     );
   }
@@ -63,9 +66,9 @@ export default function SearchPage() {
     <div className="bg-gray-50">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-1">Search Guests</h2>
+          <h2 className="text-2xl font-bold mb-1">{t("title")}</h2>
           <p className="text-sm text-muted-foreground">
-            Look up guests by name or email to check their history.
+            {t("subtitle")}
           </p>
         </div>
         <div className="mb-6">

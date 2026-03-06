@@ -2,15 +2,15 @@
 
 import { useAuthContext } from "@/app/providers";
 import { useEffect, useState, FormEvent } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import { FileText, Users, Plus, Search, Pencil, ArrowRight } from "lucide-react";
 
-// --- Shared helpers (same as guest detail page) ---
+// --- Shared helpers ---
 
 const INCIDENT_COLORS: Record<string, string> = {
   damage: "bg-red-100 text-red-800 border-red-200",
@@ -20,10 +20,6 @@ const INCIDENT_COLORS: Record<string, string> = {
   no_show: "bg-gray-100 text-gray-800 border-gray-200",
   other: "bg-blue-100 text-blue-800 border-blue-200",
 };
-
-function formatIncidentType(type: string): string {
-  return type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
 function SeverityDots({ severity }: { severity: number }) {
   return (
@@ -68,20 +64,13 @@ interface DashboardData {
 function DashboardSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
-      {/* Welcome */}
       <div className="h-8 w-64 bg-gray-200 rounded" />
-
-      {/* Stats row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-28 bg-gray-200 rounded-lg" />
         ))}
       </div>
-
-      {/* Search */}
       <div className="h-12 bg-gray-200 rounded-lg" />
-
-      {/* Reports */}
       <div className="space-y-3">
         <div className="h-6 w-48 bg-gray-200 rounded" />
         {[1, 2, 3].map((i) => (
@@ -101,6 +90,8 @@ export default function DashboardPage() {
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const t = useTranslations("dashboard");
+  const tIncident = useTranslations("incidentTypes");
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -128,7 +119,7 @@ export default function DashboardPage() {
     e.preventDefault();
     const q = searchQuery.trim();
     if (q) {
-      router.push(`/search?q=${encodeURIComponent(q)}`);
+      router.push(`/search?q=${encodeURIComponent(q)}` as "/search");
     }
   }
 
@@ -162,19 +153,18 @@ export default function DashboardPage() {
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {/* Welcome */}
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, {profile?.full_name || "User"}
+          {t("welcomeBack", { name: profile?.full_name || "User" })}
         </h1>
 
         {/* Stats cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* My Reports */}
           <Card>
             <CardContent className="flex items-center gap-4 p-6">
               <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
                 <FileText className="size-6" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">My Reports</p>
+                <p className="text-sm text-gray-500">{t("myReports")}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {stats.my_reports_count}
                 </p>
@@ -182,14 +172,13 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Total Guests */}
           <Card>
             <CardContent className="flex items-center gap-4 p-6">
               <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
                 <Users className="size-6" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Total Guests in DB</p>
+                <p className="text-sm text-gray-500">{t("totalGuests")}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {stats.total_guests}
                 </p>
@@ -197,20 +186,19 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Add Report */}
           <Card className="bg-blue-600 text-white border-blue-600">
             <CardContent className="flex items-center gap-4 p-6">
               <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-blue-500">
                 <Plus className="size-6 text-white" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-blue-100">Quick Action</p>
+                <p className="text-sm text-blue-100">{t("quickAction")}</p>
                 <Link href="/report/new">
                   <Button
                     variant="secondary"
                     className="mt-1 bg-white text-blue-600 hover:bg-blue-50"
                   >
-                    Add Report
+                    {t("addReport")}
                   </Button>
                 </Link>
               </div>
@@ -226,21 +214,21 @@ export default function DashboardPage() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Quick search guests..."
+                  placeholder={t("quickSearch")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
                 />
               </div>
               <Button type="submit" variant="default">
-                Search
+                {t("myReports").split(" ")[0] === "Moje" ? "Hľadať" : "Search"}
               </Button>
             </form>
             <Link
               href="/search"
               className="inline-flex items-center gap-1 mt-2 text-sm text-blue-600 hover:text-blue-800"
             >
-              Go to full search
+              {t("goToFullSearch")}
               <ArrowRight className="size-3" />
             </Link>
           </CardContent>
@@ -249,7 +237,7 @@ export default function DashboardPage() {
         {/* My Recent Reports */}
         <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            My Recent Reports
+            {t("myRecentReports")}
           </h2>
 
           {reports.length === 0 ? (
@@ -257,10 +245,10 @@ export default function DashboardPage() {
               <CardContent className="p-8 text-center">
                 <FileText className="mx-auto size-10 text-gray-300 mb-3" />
                 <p className="text-gray-500 mb-4">
-                  No reports yet. Add your first report!
+                  {t("noReportsYet")}
                 </p>
                 <Link href="/report/new">
-                  <Button>Add Report</Button>
+                  <Button>{t("addReport")}</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -278,11 +266,10 @@ export default function DashboardPage() {
                   <Card key={report.id} className="hover:shadow-md transition-shadow">
                     <CardContent className="p-4">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                        {/* Guest name + incident badge */}
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-wrap items-center gap-2 mb-1">
                             <Link
-                              href={`/guest/${report.guest_id}`}
+                              href={`/guest/${report.guest_id}` as "/dashboard"}
                               className="font-medium text-blue-600 hover:text-blue-800 hover:underline truncate"
                             >
                               {report.guest_name}
@@ -291,7 +278,7 @@ export default function DashboardPage() {
                               variant="outline"
                               className={`text-xs ${incidentColor}`}
                             >
-                              {formatIncidentType(report.incident_type)}
+                              {tIncident(report.incident_type as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
                             </Badge>
                           </div>
                           <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
@@ -304,17 +291,16 @@ export default function DashboardPage() {
                           </div>
                         </div>
 
-                        {/* Severity + edit */}
                         <div className="flex items-center gap-3 shrink-0">
                           <SeverityDots severity={report.severity} />
-                          <Link href={`/report/${report.id}/edit`}>
+                          <Link href={`/report/${report.id}/edit` as "/dashboard"}>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="text-gray-400 hover:text-gray-600"
                             >
                               <Pencil className="size-4" />
-                              <span className="sr-only">Edit report</span>
+                              <span className="sr-only">{t("editReport")}</span>
                             </Button>
                           </Link>
                         </div>

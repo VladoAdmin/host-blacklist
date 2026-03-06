@@ -1,8 +1,9 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useAuthContext } from "@/app/providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+  const t = useTranslations("auth");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,15 +43,15 @@ function LoginForm() {
       return;
     }
 
-    router.push(redirectTo);
+    router.push(redirectTo as "/dashboard");
     router.refresh();
   };
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
-        <CardDescription>Welcome back to Host Blacklist</CardDescription>
+        <CardTitle className="text-2xl font-bold">{t("signIn")}</CardTitle>
+        <CardDescription>{t("welcomeBack")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <OAuthButtons redirectTo={redirectTo} />
@@ -59,7 +61,7 @@ function LoginForm() {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-card px-2 text-muted-foreground">
-              Or continue with email
+              {t("orContinueWithEmail")}
             </span>
           </div>
         </div>
@@ -72,11 +74,11 @@ function LoginForm() {
             </Alert>
           )}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("email")}</Label>
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -84,11 +86,11 @@ function LoginForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("password")}</Label>
             <Input
               id="password"
               type="password"
-              placeholder="Your password"
+              placeholder={t("passwordPlaceholder")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -99,15 +101,15 @@ function LoginForm() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? t("signingIn") : t("signIn")}
           </Button>
           <p className="text-sm text-gray-600 text-center">
-            Don&apos;t have an account?{" "}
+            {t("noAccount")}{" "}
             <Link
               href="/register"
               className="text-blue-600 hover:underline font-medium"
             >
-              Sign Up
+              {t("signUp")}
             </Link>
           </p>
         </CardFooter>
@@ -117,11 +119,13 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
+  const t = useTranslations("common");
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Suspense
         fallback={
-          <div className="text-gray-500">Loading...</div>
+          <div className="text-gray-500">{t("loading")}</div>
         }
       >
         <LoginForm />

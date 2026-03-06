@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useAuthContext } from "@/app/providers";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +17,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
-import Link from "next/link";
 import {
   ArrowLeft,
   AlertTriangle,
@@ -75,9 +76,7 @@ function SeverityDots({ severity }: { severity: number }) {
         <span
           key={i}
           className={`inline-block size-2.5 rounded-full ${
-            i < severity
-              ? "bg-red-500"
-              : "bg-gray-200"
+            i < severity ? "bg-red-500" : "bg-gray-200"
           }`}
         />
       ))}
@@ -87,7 +86,7 @@ function SeverityDots({ severity }: { severity: number }) {
 
 function formatDate(dateStr: string): string {
   try {
-    return new Date(dateStr).toLocaleDateString("en-GB", {
+    return new Date(dateStr).toLocaleDateString("sk-SK", {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -95,10 +94,6 @@ function formatDate(dateStr: string): string {
   } catch {
     return dateStr;
   }
-}
-
-function formatIncidentType(type: string): string {
-  return type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function ReportCard({
@@ -112,6 +107,10 @@ function ReportCard({
   const [flagDialogOpen, setFlagDialogOpen] = useState(false);
   const [flagReason, setFlagReason] = useState("");
   const [flagSubmitting, setFlagSubmitting] = useState(false);
+  const t = useTranslations("guest");
+  const tIncident = useTranslations("incidentTypes");
+  const tPlatform = useTranslations("platforms");
+  const tCommon = useTranslations("common");
 
   const incidentColor =
     INCIDENT_COLORS[report.incident_type] || INCIDENT_COLORS.other;
@@ -141,7 +140,7 @@ function ReportCard({
       });
 
       if (res.status === 409) {
-        toast("error", "You already flagged this report");
+        toast("error", t("flagAlreadySubmitted"));
         setFlagDialogOpen(false);
         setFlagReason("");
         return;
@@ -149,15 +148,15 @@ function ReportCard({
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        toast("error", data.error || "Failed to submit flag");
+        toast("error", data.error || tCommon("error"));
         return;
       }
 
-      toast("success", "Thank you, we'll review this report");
+      toast("success", t("flagThankYou"));
       setFlagDialogOpen(false);
       setFlagReason("");
     } catch {
-      toast("error", "Something went wrong. Please try again.");
+      toast("error", tCommon("error"));
     } finally {
       setFlagSubmitting(false);
     }
@@ -173,13 +172,13 @@ function ReportCard({
                 variant="outline"
                 className={`text-xs font-medium ${incidentColor}`}
               >
-                {formatIncidentType(report.incident_type)}
+                {tIncident(report.incident_type as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
               </Badge>
               <Badge
                 variant="outline"
                 className={`text-xs font-medium ${platformColor}`}
               >
-                {report.platform || "Other"}
+                {tPlatform(platformKey as "airbnb" | "booking" | "direct" | "other")}
               </Badge>
             </div>
             <SeverityDots severity={report.severity} />
@@ -202,11 +201,11 @@ function ReportCard({
                 >
                   {expanded ? (
                     <>
-                      Show less <ChevronUp className="size-3" />
+                      {t("showLess")} <ChevronUp className="size-3" />
                     </>
                   ) : (
                     <>
-                      Read more <ChevronDown className="size-3" />
+                      {t("readMore")} <ChevronDown className="size-3" />
                     </>
                   )}
                 </button>
@@ -232,9 +231,9 @@ function ReportCard({
                   className="h-6 px-2 text-xs text-muted-foreground hover:text-blue-600"
                   asChild
                 >
-                  <Link href={`/report/${report.id}/edit`}>
+                  <Link href={`/report/${report.id}/edit` as "/dashboard"}>
                     <Pencil className="size-3 mr-1" />
-                    Edit
+                    {tCommon("edit")}
                   </Link>
                 </Button>
               )}
@@ -246,7 +245,7 @@ function ReportCard({
                   onClick={() => setFlagDialogOpen(true)}
                 >
                   <Flag className="size-3 mr-1" />
-                  Report as false
+                  {t("reportAsFalse")}
                 </Button>
               )}
             </div>
@@ -257,24 +256,22 @@ function ReportCard({
       <Dialog open={flagDialogOpen} onOpenChange={setFlagDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Report as false</DialogTitle>
+            <DialogTitle>{t("reportAsFalseTitle")}</DialogTitle>
             <DialogDescription>
-              If you believe this report is inaccurate or false, please explain
-              why. Our team will review your submission.
+              {t("reportAsFalseDesc")}
             </DialogDescription>
           </DialogHeader>
           <div className="py-2">
             <textarea
               className="w-full min-h-[100px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
-              placeholder="Describe why you believe this report is false (min. 10 characters)..."
+              placeholder={t("flagReasonPlaceholder")}
               value={flagReason}
               onChange={(e) => setFlagReason(e.target.value)}
               disabled={flagSubmitting}
             />
             {flagReason.length > 0 && flagReason.trim().length < 10 && (
               <p className="text-xs text-red-500 mt-1">
-                Please enter at least 10 characters ({flagReason.trim().length}
-                /10)
+                {t("flagMinChars", { count: flagReason.trim().length })}
               </p>
             )}
           </div>
@@ -287,14 +284,14 @@ function ReportCard({
               }}
               disabled={flagSubmitting}
             >
-              Cancel
+              {tCommon("cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={handleFlagSubmit}
               disabled={flagSubmitting || flagReason.trim().length < 10}
             >
-              {flagSubmitting ? "Submitting..." : "Submit"}
+              {flagSubmitting ? t("flagSubmitting") : tCommon("submit")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -311,13 +308,15 @@ export default function GuestDetailPage() {
   const [reports, setReports] = useState<ReportData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("guest");
+  const tSearch = useTranslations("search");
 
   const guestId = params.id as string;
 
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      router.push(`/login?redirectTo=/guest/${guestId}`);
+      router.push(`/login?redirectTo=/guest/${guestId}` as "/login");
       return;
     }
 
@@ -325,16 +324,16 @@ export default function GuestDetailPage() {
       try {
         const res = await fetch(`/api/guests/${guestId}`);
         if (res.status === 401) {
-          router.push(`/login?redirectTo=/guest/${guestId}`);
+          router.push(`/login?redirectTo=/guest/${guestId}` as "/login");
           return;
         }
         if (res.status === 404) {
-          setError("Guest not found");
+          setError(t("notFound"));
           setLoading(false);
           return;
         }
         if (!res.ok) {
-          setError("Failed to load guest data");
+          setError(t("notFound"));
           setLoading(false);
           return;
         }
@@ -342,21 +341,21 @@ export default function GuestDetailPage() {
         setGuest(data.guest);
         setReports(data.reports || []);
       } catch {
-        setError("Something went wrong");
+        setError(t("notFound"));
       } finally {
         setLoading(false);
       }
     }
 
     fetchGuest();
-  }, [guestId, user, authLoading, router]);
+  }, [guestId, user, authLoading, router, t]);
 
   if (authLoading || (loading && !error)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-3">
           <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          <p className="text-sm text-muted-foreground">Loading guest details...</p>
+          <p className="text-sm text-muted-foreground">{t("loadingDetails")}</p>
         </div>
       </div>
     );
@@ -373,7 +372,7 @@ export default function GuestDetailPage() {
             className="mb-6"
           >
             <ArrowLeft className="size-4 mr-1.5" />
-            Back to Search
+            {t("backToSearch")}
           </Button>
           <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
             <AlertTriangle className="size-10 mb-3 opacity-40" />
@@ -386,6 +385,13 @@ export default function GuestDetailPage() {
 
   if (!guest) return null;
 
+  const reportsLabel =
+    guest.reports_count === 1
+      ? t("reportSingle")
+      : guest.reports_count >= 2 && guest.reports_count <= 4
+        ? t("reportFew")
+        : t("reportMany");
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b">
@@ -396,7 +402,7 @@ export default function GuestDetailPage() {
             onClick={() => router.push("/search")}
           >
             <ArrowLeft className="size-4 mr-1.5" />
-            Back to Search
+            {t("backToSearch")}
           </Button>
         </div>
       </header>
@@ -436,8 +442,7 @@ export default function GuestDetailPage() {
                 }`}
               >
                 <AlertTriangle className="size-3.5" />
-                {guest.reports_count}{" "}
-                {guest.reports_count === 1 ? "report" : "reports"}
+                {guest.reports_count} {reportsLabel}
               </div>
             </div>
           </CardContent>
@@ -446,15 +451,15 @@ export default function GuestDetailPage() {
         {/* Reports Section */}
         <div className="mb-4 flex items-center gap-2">
           <FileText className="size-4 text-muted-foreground" />
-          <h2 className="text-lg font-semibold">Reports</h2>
+          <h2 className="text-lg font-semibold">{t("reports")}</h2>
         </div>
 
         {reports.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
             <FileText className="size-10 mb-3 opacity-40" />
-            <p className="text-sm font-medium">No reports found</p>
+            <p className="text-sm font-medium">{t("noReports")}</p>
             <p className="text-xs mt-1">
-              This guest has no reported incidents.
+              {t("noReportsDesc")}
             </p>
           </div>
         ) : (

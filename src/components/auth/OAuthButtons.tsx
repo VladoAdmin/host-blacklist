@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
@@ -57,6 +58,7 @@ interface OAuthButtonsProps {
 export default function OAuthButtons({ redirectTo }: OAuthButtonsProps) {
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("auth");
 
   const handleOAuthLogin = async (provider: "google" | "facebook") => {
     setLoadingProvider(provider);
@@ -76,7 +78,6 @@ export default function OAuthButtons({ redirectTo }: OAuthButtonsProps) {
       setError(error.message);
       setLoadingProvider(null);
     }
-    // If no error, the browser will redirect to the provider
   };
 
   const isLoading = loadingProvider !== null;
@@ -94,7 +95,7 @@ export default function OAuthButtons({ redirectTo }: OAuthButtonsProps) {
         disabled={isLoading}
       >
         <GoogleIcon />
-        {loadingProvider === "google" ? "Redirecting..." : "Continue with Google"}
+        {loadingProvider === "google" ? t("redirecting") : t("continueWithGoogle")}
       </Button>
       <Button
         type="button"
@@ -105,8 +106,8 @@ export default function OAuthButtons({ redirectTo }: OAuthButtonsProps) {
       >
         <FacebookIcon />
         {loadingProvider === "facebook"
-          ? "Redirecting..."
-          : "Continue with Facebook"}
+          ? t("redirecting")
+          : t("continueWithFacebook")}
       </Button>
     </div>
   );

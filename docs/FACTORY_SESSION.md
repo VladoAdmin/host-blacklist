@@ -69,8 +69,57 @@
 |------|-------------|----------|-------|
 | PRD_APPROVAL | APPROVED | Vlado schválil | 2026-03-05 13:00 |
 
-## H. Final Delivery
-**Status:** DONE  
+## H. Final Delivery (v1)
+**Status:** DONE
+**URL:** https://host-blacklist.vercel.app
+**Final Commit:** c10ff03
+
+---
+
+## I. ITERATE MODE — Host Blacklist v2
+**Status:** IN_PROGRESS
+**Spawned:** 2026-03-06
+**Scope:** 7 nových/zmenových bodov
+
+### I.1 Delta Features (zadanie od Vlada)
+1. **OCR Photo Upload** — upload fotky rezervácie → OCR extrahuje meno, email, dátumy
+2. **Default Slovak Language** — zmena z EN na SK default, EN ako fallback
+3. **Facebook Integration** — postovanie nových záznamov do FB Group/Page
+4. **Moderný GUI Redesign** — Linear/Notion/Vercel štýl, čistý, profesionálny
+5. **Rozšírené Štatistiky** — dashboard: last global record, počty (dnes/týždeň/mesiac/rok), top reportéri, trend graf
+6. **PWA Support** — manifest, service worker, icons (192x192, 512x512)
+7. **Google OAuth** — prihlásenie cez Google účet
+
+### I.2 Critical Bugs Found by Scanner
+- **BUG-001:** `src/proxy.ts` namiesto `middleware.ts` — route protection nefunguje server-side
+- **BUG-002:** Platform case mismatch — frontend "Airbnb" vs DB CHECK "airbnb"
+- **BUG-003:** sw.js stale — referencuje neexistujúce `[locale]` routes
+
+### I.3 Sub-Agent Runs (v2)
+| Task | Agent | Label | Status | Commit/Výstup |
+|------|-------|-------|--------|---------------|
+| PROJECT_SNAPSHOT | Scanner | scanner-host-blacklist-v2 | ✅ Done | PROJECT_SNAPSHOT.md |
+| TASK-101 Google OAuth | Coder | coder-TASK-101-v1 | ✅ Done | commit 3e6699e |
+| TASK-102 Facebook Integration | Coder | coder-TASK-102-v1 | ✅ Done | commit ccb68a9 |
+| TASK-103 i18n Default SK | Coder | coder-TASK-103-v1 | 🔄 In Progress | runId: 3d59a77a-e997-47c2-ba0f-6fd8b51835f5 |
+
+### I.4 Current Gate
+**Gate:** DELTA_APPROVAL — ✅ SCHVÁLENÉ 2026-03-06
+**Rozhodnutie:** APPROVED
+**Poznámka:** Vlado schválil všetkých 7 delta features + 3 bugfixy. Postupovať podľa plánu fáz.
+
+### I.5 Next Steps
+1. ✅ Schválenie DELTA_TASKS.md (Františka/Vlado) — DONE
+2. ✅ Bugfix sprint (BUG-001, BUG-002, BUG-003) — DONE (commits b52d3ec, a1bd990, 6f0a7e7)
+3. 🔄 Build sprint — delta features — IN PROGRESS
+   - ✅ TASK-101: Google OAuth — DONE (commit 3e6699e)
+   - 🔄 TASK-102: Facebook Integration — IN PROGRESS (Factory Coder spawned)
+   - ⏳ TASK-103: i18n Default SK
+   - ⏳ TASK-104: PWA Full Support
+   - ⏳ TASK-105: OCR Photo Upload
+   - ⏳ TASK-106: Rozšírené Štatistiky
+   - ⏳ TASK-107: Moderný GUI Redesign
+4. ⏳ E2E + Deploy  
 **URL:** https://host-blacklist.vercel.app  
 **Final Commit:** c10ff03  
 **QA Result:** PASS WITH NOTES  

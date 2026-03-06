@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useAuthContext } from "@/app/providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 
 export default function SettingsPage() {
   const { user, profile, loading: authLoading, refreshProfile } = useAuthContext();
+  const t = useTranslations("settings");
 
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -31,7 +33,6 @@ export default function SettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [formLoaded, setFormLoaded] = useState(false);
 
-  // Populate form when profile loads
   useEffect(() => {
     if (profile && !formLoaded) {
       setFullName(profile.full_name || "");
@@ -47,9 +48,8 @@ export default function SettingsPage() {
     e.preventDefault();
     setError(null);
 
-    // Client-side validation
     if (!fullName.trim()) {
-      setError("Full name is required.");
+      setError(t("fullNameRequired"));
       return;
     }
 
@@ -74,7 +74,7 @@ export default function SettingsPage() {
       }
 
       await refreshProfile();
-      toast("success", "Profile updated successfully!");
+      toast("success", t("updateSuccess"));
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -101,14 +101,14 @@ export default function SettingsPage() {
           className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6"
         >
           <ArrowLeft className="size-4" />
-          Back to Dashboard
+          {t("backToDashboard")}
         </Link>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">Profile Settings</CardTitle>
+            <CardTitle className="text-xl">{t("title")}</CardTitle>
             <CardDescription>
-              Manage your personal information and preferences.
+              {t("subtitle")}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
@@ -119,9 +119,8 @@ export default function SettingsPage() {
                 </Alert>
               )}
 
-              {/* Email (read-only) */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -130,19 +129,18 @@ export default function SettingsPage() {
                   className="bg-gray-50"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Email cannot be changed here.
+                  {t("emailReadOnly")}
                 </p>
               </div>
 
-              {/* Full Name (required) */}
               <div className="space-y-2">
                 <Label htmlFor="full_name">
-                  Full Name <span className="text-red-500">*</span>
+                  {t("fullName")} <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="full_name"
                   type="text"
-                  placeholder="Your full name"
+                  placeholder={t("fullNamePlaceholder")}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required
@@ -150,49 +148,45 @@ export default function SettingsPage() {
                 />
               </div>
 
-              {/* Company Name (optional) */}
               <div className="space-y-2">
-                <Label htmlFor="company_name">Company / Property Name</Label>
+                <Label htmlFor="company_name">{t("companyName")}</Label>
                 <Input
                   id="company_name"
                   type="text"
-                  placeholder="e.g. Sunny Apartments"
+                  placeholder={t("companyNamePlaceholder")}
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   autoComplete="organization"
                 />
               </div>
 
-              {/* City (optional) */}
               <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
+                <Label htmlFor="city">{t("city")}</Label>
                 <Input
                   id="city"
                   type="text"
-                  placeholder="e.g. Bratislava"
+                  placeholder={t("cityPlaceholder")}
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   autoComplete="address-level2"
                 />
               </div>
 
-              {/* Country (optional) */}
               <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
+                <Label htmlFor="country">{t("country")}</Label>
                 <Input
                   id="country"
                   type="text"
-                  placeholder="e.g. Slovakia"
+                  placeholder={t("countryPlaceholder")}
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                   autoComplete="country-name"
                 />
               </div>
 
-              {/* Properties Count */}
               <div className="space-y-2">
                 <Label htmlFor="properties_count">
-                  Number of Properties
+                  {t("propertiesCount")}
                 </Label>
                 <Input
                   id="properties_count"
@@ -207,7 +201,7 @@ export default function SettingsPage() {
                   }
                 />
                 <p className="text-xs text-muted-foreground">
-                  How many properties do you manage?
+                  {t("propertiesCountHelp")}
                 </p>
               </div>
             </CardContent>
@@ -217,10 +211,10 @@ export default function SettingsPage() {
                 {saving ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
-                    Saving...
+                    {t("saving")}
                   </>
                 ) : (
-                  "Save Changes"
+                  t("saveChanges")
                 )}
               </Button>
             </CardFooter>

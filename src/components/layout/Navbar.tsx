@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname as useNextPathname } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useAuthContext } from "@/app/providers";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,26 +22,40 @@ import {
   Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { routing } from "@/i18n/routing";
 
 const NAV_LINKS = [
-  { href: "/search", label: "Search", icon: Search },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/report/new", label: "Add Report", icon: FilePlus },
-  { href: "/settings", label: "Settings", icon: Settings },
-] as const;
+  { href: "/search" as const, labelKey: "search" as const, icon: Search },
+  { href: "/dashboard" as const, labelKey: "dashboard" as const, icon: LayoutDashboard },
+  { href: "/report/new" as const, labelKey: "addReport" as const, icon: FilePlus },
+  { href: "/settings" as const, labelKey: "settings" as const, icon: Settings },
+];
 
 /** Routes where the navbar should NOT be shown (public pages). */
 const PUBLIC_ROUTES = ["/", "/login", "/register"];
 
+function stripLocale(pathname: string): string {
+  for (const locale of routing.locales) {
+    if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
+      return pathname.slice(`/${locale}`.length) || "/";
+    }
+  }
+  return pathname;
+}
+
 function isPublicRoute(pathname: string) {
-  return PUBLIC_ROUTES.includes(pathname);
+  const strippedPath = stripLocale(pathname);
+  return PUBLIC_ROUTES.includes(strippedPath);
 }
 
 export function Navbar() {
-  const pathname = usePathname();
+  const pathname = useNextPathname();
   const router = useRouter();
   const { user, profile, signOut, loading } = useAuthContext();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const t = useTranslations("nav");
+  const tAuth = useTranslations("auth");
 
   // Don't render navbar on public routes
   if (isPublicRoute(pathname)) {
@@ -60,10 +75,11 @@ export function Navbar() {
   if (!user) {
     return (
       <header className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <Link href="/" className="text-xl font-bold">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/dashboard" className="text-xl font-bold">
             Host Blacklist
           </Link>
+          <LanguageSwitcher />
         </div>
       </header>
     );
@@ -76,6 +92,7 @@ export function Navbar() {
   };
 
   const displayName = profile?.full_name || user.email || "User";
+  const strippedPath = stripLocale(pathname);
 
   return (
     <header className="bg-white border-b sticky top-0 z-50">
@@ -87,9 +104,9 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1 ml-8">
-          {NAV_LINKS.map(({ href, label, icon: Icon }) => {
+          {NAV_LINKS.map(({ href, labelKey, icon: Icon }) => {
             const isActive =
-              pathname === href || pathname.startsWith(href + "/");
+              strippedPath === href || strippedPath.startsWith(href + "/");
             return (
               <Link
                 key={href}
@@ -102,7 +119,7 @@ export function Navbar() {
                 )}
               >
                 <Icon className="size-4" />
-                {label}
+                {t(labelKey)}
               </Link>
             );
           })}
@@ -110,12 +127,13 @@ export function Navbar() {
 
         {/* Desktop user area */}
         <div className="hidden md:flex items-center gap-3 ml-auto">
+          <LanguageSwitcher />
           <span className="text-sm text-gray-600 truncate max-w-[160px]">
             {displayName}
           </span>
           <Button variant="outline" size="sm" onClick={handleSignOut}>
             <LogOut className="size-4" />
-            Sign Out
+            {tAuth("signOut")}
           </Button>
         </div>
 
@@ -126,13 +144,13 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               className="md:hidden"
-              aria-label="Open menu"
+              aria-label={t("navigationMenu")}
             >
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-72 p-0">
-            <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+            <SheetTitle className="sr-only">{t("navigationMenu")}</SheetTitle>
             <div className="flex flex-col h-full">
               {/* Mobile header */}
               <div className="px-4 py-4 border-b">
@@ -142,9 +160,9 @@ export function Navbar() {
 
               {/* Mobile nav links */}
               <nav className="flex-1 py-2">
-                {NAV_LINKS.map(({ href, label, icon: Icon }) => {
+                {NAV_LINKS.map(({ href, labelKey, icon: Icon }) => {
                   const isActive =
-                    pathname === href || pathname.startsWith(href + "/");
+                    strippedPath === href || strippedPath.startsWith(href + "/");
                   return (
                     <Link
                       key={href}
@@ -158,14 +176,18 @@ export function Navbar() {
                       )}
                     >
                       <Icon className="size-5" />
-                      {label}
+                      {t(labelKey)}
                     </Link>
                   );
                 })}
               </nav>
 
-              {/* Mobile sign out */}
-              <div className="border-t p-4">
+              {/* Language switcher + sign out */}
+              <div className="border-t p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Jazyk</span>
+                  <LanguageSwitcher />
+                </div>
                 <Button
                   variant="outline"
                   className="w-full"
@@ -175,7 +197,7 @@ export function Navbar() {
                   }}
                 >
                   <LogOut className="size-4" />
-                  Sign Out
+                  {tAuth("signOut")}
                 </Button>
               </div>
             </div>

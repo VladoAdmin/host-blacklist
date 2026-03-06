@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Search, Users } from "lucide-react";
 import { GuestCard, type Guest } from "./GuestCard";
 
@@ -11,12 +12,14 @@ interface GuestListProps {
 }
 
 export function GuestList({ guests, isLoading, query, hasSearched }: GuestListProps) {
+  const t = useTranslations("search");
+
   // Loading state
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
         <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent mb-3" />
-        <p className="text-sm">Searching guests...</p>
+        <p className="text-sm">{t("searching")}</p>
       </div>
     );
   }
@@ -26,8 +29,8 @@ export function GuestList({ guests, isLoading, query, hasSearched }: GuestListPr
     return (
       <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
         <Search className="size-10 mb-3 opacity-40" />
-        <p className="text-sm font-medium">Search for a guest</p>
-        <p className="text-xs mt-1">Enter at least 2 characters to start searching</p>
+        <p className="text-sm font-medium">{t("searchPrompt")}</p>
+        <p className="text-xs mt-1">{t("minChars")}</p>
       </div>
     );
   }
@@ -37,9 +40,9 @@ export function GuestList({ guests, isLoading, query, hasSearched }: GuestListPr
     return (
       <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
         <Users className="size-10 mb-3 opacity-40" />
-        <p className="text-sm font-medium">No guests found</p>
+        <p className="text-sm font-medium">{t("noResults")}</p>
         <p className="text-xs mt-1">
-          No results for &ldquo;{query}&rdquo;. Try a different search term.
+          {t("noResultsFor", { query })}
         </p>
       </div>
     );
@@ -49,7 +52,7 @@ export function GuestList({ guests, isLoading, query, hasSearched }: GuestListPr
   return (
     <div>
       <p className="text-sm text-muted-foreground mb-3">
-        {guests.length} {guests.length === 1 ? "result" : "results"} for &ldquo;{query}&rdquo;
+        {t("resultCount", { count: guests.length, query })}
       </p>
       <div className="flex flex-col gap-2">
         {guests.map((guest) => (
