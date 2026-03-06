@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  applicationName: "Host Blacklist",
   title: "Host Blacklist — Protect Your Property",
   description:
     "Community-driven platform for hosts to share and search guest history",
@@ -25,6 +26,9 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: "Host Blacklist",
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 
