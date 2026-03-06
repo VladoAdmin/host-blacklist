@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { VALID_INCIDENT_TYPES, VALID_PLATFORMS } from "@/lib/constants";
+import { shareToFacebookGroup } from "@/lib/facebook";
 import { NextRequest, NextResponse } from "next/server";
 
 function isValidEmail(email: string): boolean {
@@ -211,6 +212,24 @@ export async function POST(request: NextRequest) {
         .eq("id", guestId);
     }
   }
+
+  // Auto-share to Facebook Group (best-effort, non-blocking)
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const host = forwardedHost || request.headers.get("host") || "localhost:3000";
+  const protocol = forwardedHost ? "https" : request.nextUrl.protocol.replace(":", "");
+  const baseUrl = `${protocol}://${host}`;
+
+  // Fire-and-forget: don't await, don't block the response
+  shareToFacebookGroup(
+    {
+      incidentType: incident_type!,
+      severity: severity ? Number(severity) : 3,
+      guestId,
+    },
+    baseUrl
+  ).catch((err) => {
+    console.error("[reports] Facebook share background error:", err);
+  });
 
   return NextResponse.json(
     { guest_id: guestId, report_id: report!.id },
