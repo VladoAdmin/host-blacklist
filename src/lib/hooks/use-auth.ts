@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
@@ -18,7 +18,7 @@ export function useAuth() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const fetchProfile = useCallback(
     async (userId: string) => {
@@ -61,7 +61,7 @@ export function useAuth() {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase, fetchProfile]);
+  }, [fetchProfile]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({

@@ -25,9 +25,6 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <div className="bg-blue-600 text-white text-center py-3 px-4">
-        <span className="font-medium">✅ Orchestrácia funguje</span>
-      </div>
       <main className="max-w-4xl mx-auto px-4 py-20 text-center">
         <h2 className="text-4xl font-bold mb-4">{t("hero")}</h2>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
