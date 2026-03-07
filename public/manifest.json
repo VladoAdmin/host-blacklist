@@ -1,13 +1,13 @@
 {
-  "name": "Host Blacklist",
-  "short_name": "HostBL",
-  "description": "Platforma pre zdieľanie čiernej listiny nevhodných hostí",
+  "name": "Sentinel HostGuard",
+  "short_name": "HostGuard",
+  "description": "Bezpečnostná platforma pre overovanie hostí",
   "start_url": "/sk",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#0A0A0A",
+  "theme_color": "#F59E0B",
   "lang": "sk",
   "categories": ["business", "social"],
   "icons": [

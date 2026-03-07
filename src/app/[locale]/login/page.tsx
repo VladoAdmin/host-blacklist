@@ -48,19 +48,19 @@ function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-sentinel-card border-sentinel-border">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">{t("signIn")}</CardTitle>
-        <CardDescription>{t("welcomeBack")}</CardDescription>
+        <CardTitle className="text-2xl font-bold text-white">{t("signIn")}</CardTitle>
+        <CardDescription className="text-sentinel-muted">{t("welcomeBack")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <OAuthButtons redirectTo={redirectTo} />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+            <span className="w-full border-t border-sentinel-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">
+            <span className="bg-sentinel-card px-2 text-sentinel-muted">
               {t("orContinueWithEmail")}
             </span>
           </div>
@@ -74,7 +74,7 @@ function LoginForm() {
             </Alert>
           )}
           <div className="space-y-2">
-            <Label htmlFor="email">{t("email")}</Label>
+            <Label htmlFor="email" className="text-sentinel-text">{t("email")}</Label>
             <Input
               id="email"
               type="email"
@@ -83,10 +83,11 @@ function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
+              className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">{t("password")}</Label>
+            <Label htmlFor="password" className="text-sentinel-text">{t("password")}</Label>
             <Input
               id="password"
               type="password"
@@ -96,18 +97,19 @@ function LoginForm() {
               required
               autoComplete="current-password"
               minLength={6}
+              className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
             />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full bg-sentinel-accent text-black hover:bg-amber-400 font-semibold" disabled={loading}>
             {loading ? t("signingIn") : t("signIn")}
           </Button>
-          <p className="text-sm text-gray-600 text-center">
+          <p className="text-sm text-sentinel-muted text-center">
             {t("noAccount")}{" "}
             <Link
               href="/register"
-              className="text-blue-600 hover:underline font-medium"
+              className="text-sentinel-accent hover:underline font-medium"
             >
               {t("signUp")}
             </Link>
@@ -122,10 +124,10 @@ export default function LoginPage() {
   const t = useTranslations("common");
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-sentinel-bg px-4">
       <Suspense
         fallback={
-          <div className="text-gray-500">{t("loading")}</div>
+          <div className="text-sentinel-muted">{t("loading")}</div>
         }
       >
         <LoginForm />

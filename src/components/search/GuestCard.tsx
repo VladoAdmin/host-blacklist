@@ -18,9 +18,9 @@ interface GuestCardProps {
 }
 
 function getSeverityColor(reportsCount: number) {
-  if (reportsCount === 0) return "text-green-600 bg-green-50 border-green-200";
-  if (reportsCount <= 2) return "text-yellow-600 bg-yellow-50 border-yellow-200";
-  return "text-red-600 bg-red-50 border-red-200";
+  if (reportsCount === 0) return "text-green-400 bg-green-500/10 border-green-500/30";
+  if (reportsCount <= 2) return "text-yellow-400 bg-yellow-500/10 border-yellow-500/30";
+  return "text-red-400 bg-red-500/10 border-red-500/30";
 }
 
 export function GuestCard({ guest }: GuestCardProps) {
@@ -38,21 +38,21 @@ export function GuestCard({ guest }: GuestCardProps) {
 
   return (
     <Link href={`/guest/${guest.id}` as "/dashboard"} className="block">
-    <Card className="transition-shadow hover:shadow-md py-0 overflow-hidden cursor-pointer">
+    <Card className="transition-colors hover:border-sentinel-accent/30 py-0 overflow-hidden cursor-pointer bg-sentinel-card border-sentinel-border">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 min-w-0">
-            <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-muted">
-              <User className="size-4 text-muted-foreground" />
+            <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-sentinel-border">
+              <User className="size-4 text-sentinel-muted" />
             </div>
             <div className="min-w-0">
-              <h3 className="font-semibold truncate">{guest.full_name}</h3>
-              <div className="flex items-center gap-1.5 mt-0.5 text-sm text-muted-foreground">
+              <h3 className="font-semibold truncate text-white">{guest.full_name}</h3>
+              <div className="flex items-center gap-1.5 mt-0.5 text-sm text-sentinel-muted">
                 <Mail className="size-3 shrink-0" />
                 <span className="truncate">{guest.email}</span>
               </div>
               <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-sentinel-muted">
                   {matchLabel} ({matchPercent}%)
                 </span>
               </div>

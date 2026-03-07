@@ -56,19 +56,19 @@ interface ReportData {
 }
 
 const INCIDENT_COLORS: Record<string, string> = {
-  damage: "bg-red-100 text-red-800 border-red-200",
-  theft: "bg-red-100 text-red-800 border-red-200",
-  fraud: "bg-red-100 text-red-800 border-red-200",
-  noise: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  no_show: "bg-gray-100 text-gray-800 border-gray-200",
-  other: "bg-blue-100 text-blue-800 border-blue-200",
+  damage: "bg-red-500/20 text-red-400 border-red-500/30",
+  theft: "bg-red-500/20 text-red-400 border-red-500/30",
+  fraud: "bg-red-500/20 text-red-400 border-red-500/30",
+  noise: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  no_show: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+  other: "bg-blue-500/20 text-blue-400 border-blue-500/30",
 };
 
 const PLATFORM_COLORS: Record<string, string> = {
-  airbnb: "bg-pink-100 text-pink-800",
-  booking: "bg-blue-100 text-blue-800",
-  direct: "bg-green-100 text-green-800",
-  other: "bg-gray-100 text-gray-800",
+  airbnb: "bg-pink-500/20 text-pink-400",
+  booking: "bg-blue-500/20 text-blue-400",
+  direct: "bg-green-500/20 text-green-400",
+  other: "bg-gray-500/20 text-gray-400",
 };
 
 function SeverityDots({ severity }: { severity: number }) {
@@ -78,7 +78,7 @@ function SeverityDots({ severity }: { severity: number }) {
         <span
           key={i}
           className={`inline-block size-2.5 rounded-full ${
-            i < severity ? "bg-red-500" : "bg-gray-200"
+            i < severity ? "bg-red-500" : "bg-sentinel-border"
           }`}
         />
       ))}
@@ -166,7 +166,7 @@ function ReportCard({
 
   return (
     <>
-      <Card className="py-0 overflow-hidden">
+      <Card className="py-0 overflow-hidden bg-sentinel-card border-sentinel-border">
         <CardContent className="p-4">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-2 flex-wrap">
@@ -186,20 +186,20 @@ function ReportCard({
             <SeverityDots severity={report.severity} />
           </div>
 
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
+          <div className="flex items-center gap-1.5 text-sm text-sentinel-muted mb-2">
             <Calendar className="size-3.5 shrink-0" />
             <span>{formatDate(report.incident_date)}</span>
           </div>
 
           {report.description && (
             <div className="mb-2">
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <p className="text-sm text-sentinel-text leading-relaxed">
                 {displayDescription}
               </p>
               {needsTruncation && (
                 <button
                   onClick={() => setExpanded(!expanded)}
-                  className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 mt-1 font-medium"
+                  className="flex items-center gap-1 text-xs text-sentinel-accent hover:text-amber-400 mt-1 font-medium"
                 >
                   {expanded ? (
                     <>
@@ -220,7 +220,7 @@ function ReportCard({
             <PhotoGallery photos={report.photo_urls} />
           )}
 
-          <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+          <div className="flex items-center justify-between text-xs text-sentinel-muted pt-2 border-t border-sentinel-border">
             <div className="flex items-center gap-1.5">
               <User className="size-3 shrink-0" />
               <span>{report.reporter}</span>
@@ -235,7 +235,7 @@ function ReportCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 text-xs text-muted-foreground hover:text-blue-600"
+                  className="h-6 px-2 text-xs text-sentinel-muted hover:text-sentinel-accent"
                   asChild
                 >
                   <Link href={`/report/${report.id}/edit` as "/dashboard"}>
@@ -248,7 +248,7 @@ function ReportCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 text-xs text-muted-foreground hover:text-red-600"
+                  className="h-6 px-2 text-xs text-sentinel-muted hover:text-red-400"
                   onClick={() => setFlagDialogOpen(true)}
                 >
                   <Flag className="size-3 mr-1" />
@@ -261,23 +261,23 @@ function ReportCard({
       </Card>
 
       <Dialog open={flagDialogOpen} onOpenChange={setFlagDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md bg-sentinel-card border-sentinel-border">
           <DialogHeader>
-            <DialogTitle>{t("reportAsFalseTitle")}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-white">{t("reportAsFalseTitle")}</DialogTitle>
+            <DialogDescription className="text-sentinel-muted">
               {t("reportAsFalseDesc")}
             </DialogDescription>
           </DialogHeader>
           <div className="py-2">
             <textarea
-              className="w-full min-h-[100px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
+              className="w-full min-h-[100px] rounded-md border border-sentinel-border bg-sentinel-bg px-3 py-2 text-sm text-white placeholder:text-sentinel-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sentinel-accent focus-visible:ring-offset-2 focus-visible:ring-offset-sentinel-card disabled:cursor-not-allowed disabled:opacity-50 resize-y"
               placeholder={t("flagReasonPlaceholder")}
               value={flagReason}
               onChange={(e) => setFlagReason(e.target.value)}
               disabled={flagSubmitting}
             />
             {flagReason.length > 0 && flagReason.trim().length < 10 && (
-              <p className="text-xs text-red-500 mt-1">
+              <p className="text-xs text-red-400 mt-1">
                 {t("flagMinChars", { count: flagReason.trim().length })}
               </p>
             )}
@@ -285,6 +285,7 @@ function ReportCard({
           <DialogFooter>
             <Button
               variant="outline"
+              className="border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
               onClick={() => {
                 setFlagDialogOpen(false);
                 setFlagReason("");
@@ -359,10 +360,10 @@ export default function GuestDetailPage() {
 
   if (authLoading || (loading && !error)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-sentinel-surface">
         <div className="flex flex-col items-center gap-3">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          <p className="text-sm text-muted-foreground">{t("loadingDetails")}</p>
+          <div className="size-8 animate-spin rounded-full border-2 border-sentinel-muted border-t-transparent" />
+          <p className="text-sm text-sentinel-muted">{t("loadingDetails")}</p>
         </div>
       </div>
     );
@@ -370,18 +371,18 @@ export default function GuestDetailPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-sentinel-surface">
         <div className="max-w-3xl mx-auto px-4 py-8">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => router.push("/search")}
-            className="mb-6"
+            className="mb-6 text-sentinel-muted hover:text-white"
           >
             <ArrowLeft className="size-4 mr-1.5" />
             {t("backToSearch")}
           </Button>
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+          <div className="flex flex-col items-center justify-center py-16 text-sentinel-muted">
             <AlertTriangle className="size-10 mb-3 opacity-40" />
             <p className="text-sm font-medium">{error}</p>
           </div>
@@ -400,13 +401,14 @@ export default function GuestDetailPage() {
         : t("reportMany");
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
+    <div className="min-h-screen bg-sentinel-surface">
+      <header className="bg-sentinel-bg border-b border-sentinel-border">
         <div className="max-w-3xl mx-auto px-4 py-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => router.push("/search")}
+            className="text-sentinel-muted hover:text-white"
           >
             <ArrowLeft className="size-4 mr-1.5" />
             {t("backToSearch")}
@@ -416,23 +418,23 @@ export default function GuestDetailPage() {
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         {/* Guest Info */}
-        <Card className="mb-6 py-0 overflow-hidden">
+        <Card className="mb-6 py-0 overflow-hidden bg-sentinel-card border-sentinel-border">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted">
-                <User className="size-5 text-muted-foreground" />
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-sentinel-border">
+                <User className="size-5 text-sentinel-muted" />
               </div>
               <div className="flex-1 min-w-0">
-                <h1 className="text-xl font-bold truncate">
+                <h1 className="text-xl font-bold truncate text-white">
                   {guest.full_name}
                 </h1>
                 <div className="flex flex-col gap-1 mt-2">
-                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1.5 text-sm text-sentinel-muted">
                     <Mail className="size-3.5 shrink-0" />
                     <span>{guest.email}</span>
                   </div>
                   {guest.phone && (
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5 text-sm text-sentinel-muted">
                       <Phone className="size-3.5 shrink-0" />
                       <span>{guest.phone}</span>
                     </div>
@@ -442,10 +444,10 @@ export default function GuestDetailPage() {
               <div
                 className={`flex items-center gap-1.5 shrink-0 rounded-full border px-3 py-1.5 text-sm font-medium ${
                   guest.reports_count === 0
-                    ? "text-green-600 bg-green-50 border-green-200"
+                    ? "text-green-400 bg-green-500/10 border-green-500/30"
                     : guest.reports_count <= 2
-                      ? "text-yellow-600 bg-yellow-50 border-yellow-200"
-                      : "text-red-600 bg-red-50 border-red-200"
+                      ? "text-yellow-400 bg-yellow-500/10 border-yellow-500/30"
+                      : "text-red-400 bg-red-500/10 border-red-500/30"
                 }`}
               >
                 <AlertTriangle className="size-3.5" />
@@ -457,12 +459,12 @@ export default function GuestDetailPage() {
 
         {/* Reports Section */}
         <div className="mb-4 flex items-center gap-2">
-          <FileText className="size-4 text-muted-foreground" />
-          <h2 className="text-lg font-semibold">{t("reports")}</h2>
+          <FileText className="size-4 text-sentinel-muted" />
+          <h2 className="text-lg font-semibold text-white">{t("reports")}</h2>
         </div>
 
         {reports.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+          <div className="flex flex-col items-center justify-center py-16 text-sentinel-muted">
             <FileText className="size-10 mb-3 opacity-40" />
             <p className="text-sm font-medium">{t("noReports")}</p>
             <p className="text-xs mt-1">

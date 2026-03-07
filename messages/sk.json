@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Host Blacklist",
+    "appName": "Sentinel HostGuard",
     "loading": "Načítavam...",
     "error": "Niečo sa pokazilo",
     "save": "Uložiť",
@@ -16,15 +16,15 @@
   "landing": {
     "signIn": "Prihlásiť sa",
     "getStarted": "Začať",
-    "hero": "Chráňte svoju nehnuteľnosť pred problémovými hosťami",
-    "subtitle": "Komunitná platforma, kde hostitelia zdieľajú a vyhľadávajú históriu hostí. Overte si hostí pred potvrdením rezervácie.",
+    "hero": "Ochráňte svoju nehnuteľnosť. Overte si každého hosťa.",
+    "subtitle": "Bezpečnostná platforma pre hostiteľov. Zdieľajte a vyhľadávajte históriu hostí skôr, než potvrdíte rezerváciu.",
     "cta": "Začať overovať hostí — Zadarmo",
-    "feature1Title": "Vyhľadávanie za sekundy",
-    "feature1Desc": "Zadajte meno alebo email hosťa. Okamžite uvidíte hlásenia od ostatných hostiteľov.",
+    "feature1Title": "Overenie za sekundy",
+    "feature1Desc": "Zadajte meno alebo email hosťa. Okamžite uvidíte hlásenia a varovania od ostatných hostiteľov.",
     "feature2Title": "Zdieľajte skúsenosti",
-    "feature2Desc": "Nahláste problémových hostí. Pomôžte ostatným hostiteľom vyhnúť sa škodám, krádežiam a podvodom.",
-    "feature3Title": "Komunitou riadené",
-    "feature3Desc": "Vytvorené hostiteľmi, pre hostiteľov. Označte falošné hlásenia. Kvalita nad kvantitou."
+    "feature2Desc": "Nahláste problémových hostí. Pomôžte komunite vyhnúť sa škodám, krádežiam a podvodom.",
+    "feature3Title": "Komunita hostiteľov",
+    "feature3Desc": "Vytvorené hostiteľmi, pre hostiteľov. Overené hlásenia. Kvalita nad kvantitou."
   },
   "auth": {
     "signIn": "Prihlásiť sa",
@@ -32,7 +32,7 @@
     "signOut": "Odhlásiť sa",
     "signingIn": "Prihlasovanie...",
     "creatingAccount": "Vytváranie účtu...",
-    "welcomeBack": "Vitajte späť v Host Blacklist",
+    "welcomeBack": "Vitajte späť v Sentinel HostGuard",
     "orContinueWithEmail": "Alebo pokračovať emailom",
     "email": "Email",
     "emailPlaceholder": "vas@email.com",
@@ -46,7 +46,7 @@
     "noAccount": "Nemáte účet?",
     "hasAccount": "Už máte účet?",
     "createAccount": "Vytvoriť účet",
-    "joinDescription": "Pripojte sa k Host Blacklist a chráňte svoju nehnuteľnosť",
+    "joinDescription": "Pripojte sa k Sentinel HostGuard a chráňte svoju nehnuteľnosť",
     "accountCreated": "Účet vytvorený!",
     "checkEmail": "Skontrolujte svoju emailovú schránku pre potvrdzovací odkaz, alebo budete čoskoro presmerovaní na dashboard.",
     "passwordsNoMatch": "Heslá sa nezhodujú",
@@ -65,7 +65,7 @@
     "navigationMenu": "Navigačné menu"
   },
   "footer": {
-    "copyright": "© 2026 Host Blacklist. Všetky práva vyhradené."
+    "copyright": "© 2026 Sentinel HostGuard. Všetky práva vyhradené."
   },
   "dashboard": {
     "welcomeBack": "Vitajte späť, {name}",

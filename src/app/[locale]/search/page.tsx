@@ -57,17 +57,17 @@ export default function SearchPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-muted-foreground">{tCommon("loading")}</p>
+        <p className="text-sentinel-muted">{tCommon("loading")}</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-sentinel-surface">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-1">{t("title")}</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-2xl font-bold mb-1 text-white">{t("title")}</h2>
+          <p className="text-sm text-sentinel-muted">
             {t("subtitle")}
           </p>
         </div>

@@ -20,6 +20,7 @@ import {
   Settings,
   LogOut,
   Menu,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -65,7 +66,7 @@ export function Navbar() {
   // While auth is loading, render a minimal placeholder to avoid layout shift
   if (loading) {
     return (
-      <header className="bg-white border-b">
+      <header className="bg-sentinel-bg border-b border-sentinel-border">
         <div className="max-w-6xl mx-auto px-4 h-14" />
       </header>
     );
@@ -74,10 +75,11 @@ export function Navbar() {
   // Not logged in on a protected route: show only logo
   if (!user) {
     return (
-      <header className="bg-white border-b">
+      <header className="bg-sentinel-bg border-b border-sentinel-border">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard" className="text-xl font-bold">
-            Host Blacklist
+          <Link href="/dashboard" className="flex items-center gap-2 text-xl font-bold text-white">
+            <Shield className="size-5 text-sentinel-accent" />
+            Sentinel HostGuard
           </Link>
           <LanguageSwitcher />
         </div>
@@ -95,11 +97,12 @@ export function Navbar() {
   const strippedPath = stripLocale(pathname);
 
   return (
-    <header className="bg-white border-b sticky top-0 z-50">
+    <header className="bg-sentinel-bg border-b border-sentinel-border sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/dashboard" className="text-xl font-bold shrink-0">
-          Host Blacklist
+        <Link href="/dashboard" className="flex items-center gap-2 text-xl font-bold text-white shrink-0">
+          <Shield className="size-5 text-sentinel-accent" />
+          Sentinel HostGuard
         </Link>
 
         {/* Desktop nav */}
@@ -114,8 +117,8 @@ export function Navbar() {
                 className={cn(
                   "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-sentinel-card text-white"
+                    : "text-sentinel-muted hover:bg-sentinel-card/50 hover:text-white"
                 )}
               >
                 <Icon className="size-4" />
@@ -128,10 +131,10 @@ export function Navbar() {
         {/* Desktop user area */}
         <div className="hidden md:flex items-center gap-3 ml-auto">
           <LanguageSwitcher />
-          <span className="text-sm text-gray-600 truncate max-w-[160px]">
+          <span className="text-sm text-sentinel-muted truncate max-w-[160px]">
             {displayName}
           </span>
-          <Button variant="outline" size="sm" onClick={handleSignOut}>
+          <Button variant="outline" size="sm" onClick={handleSignOut} className="border-sentinel-border text-sentinel-text hover:bg-sentinel-card">
             <LogOut className="size-4" />
             {tAuth("signOut")}
           </Button>
@@ -143,19 +146,19 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="md:hidden text-white hover:bg-sentinel-card"
               aria-label={t("navigationMenu")}
             >
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 p-0">
+          <SheetContent side="right" className="w-72 p-0 bg-sentinel-bg border-sentinel-border">
             <SheetTitle className="sr-only">{t("navigationMenu")}</SheetTitle>
             <div className="flex flex-col h-full">
               {/* Mobile header */}
-              <div className="px-4 py-4 border-b">
-                <p className="font-semibold truncate">{displayName}</p>
-                <p className="text-xs text-gray-500 truncate">{user.email}</p>
+              <div className="px-4 py-4 border-b border-sentinel-border">
+                <p className="font-semibold truncate text-white">{displayName}</p>
+                <p className="text-xs text-sentinel-muted truncate">{user.email}</p>
               </div>
 
               {/* Mobile nav links */}
@@ -171,8 +174,8 @@ export function Navbar() {
                       className={cn(
                         "flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-gray-100 text-gray-900"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          ? "bg-sentinel-card text-white"
+                          : "text-sentinel-muted hover:bg-sentinel-card/50 hover:text-white"
                       )}
                     >
                       <Icon className="size-5" />
@@ -183,14 +186,14 @@ export function Navbar() {
               </nav>
 
               {/* Language switcher + sign out */}
-              <div className="border-t p-4 space-y-3">
+              <div className="border-t border-sentinel-border p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Jazyk</span>
+                  <span className="text-sm text-sentinel-muted">Jazyk</span>
                   <LanguageSwitcher />
                 </div>
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
                   onClick={() => {
                     setMobileOpen(false);
                     handleSignOut();

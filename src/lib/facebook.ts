@@ -61,7 +61,7 @@ function buildPostMessage(
   const guestUrl = `${baseUrl}/guest/${params.guestId}`;
 
   return [
-    "🚨 Nový report na Host Blacklist",
+    "🚨 Nový report na Sentinel HostGuard",
     "",
     `Typ: ${typeLabel}`,
     `Závažnosť: ${params.severity}/5`,

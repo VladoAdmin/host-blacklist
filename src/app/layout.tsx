@@ -17,15 +17,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  applicationName: "Host Blacklist",
-  title: "Host Blacklist — Protect Your Property",
+  applicationName: "Sentinel HostGuard",
+  title: "Sentinel HostGuard — Protect Your Property",
   description:
-    "Community-driven platform for hosts to share and search guest history",
+    "Security platform for hosts to verify, share and search guest history",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Host Blacklist",
+    title: "Sentinel HostGuard",
   },
   formatDetection: {
     telephone: false,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#0A0A0A",
 };
 
 export default function RootLayout({

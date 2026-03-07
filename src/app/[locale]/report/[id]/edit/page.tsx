@@ -214,10 +214,10 @@ export default function EditReportPage() {
 
   if (authLoading || (loading && !error)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-sentinel-surface">
         <div className="flex flex-col items-center gap-3">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          <p className="text-sm text-muted-foreground">{t("loadingReport")}</p>
+          <div className="size-8 animate-spin rounded-full border-2 border-sentinel-muted border-t-transparent" />
+          <p className="text-sm text-sentinel-muted">{t("loadingReport")}</p>
         </div>
       </div>
     );
@@ -225,15 +225,15 @@ export default function EditReportPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-sentinel-surface">
         <div className="max-w-2xl mx-auto px-4 py-8">
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+          <div className="flex flex-col items-center justify-center py-16 text-sentinel-muted">
             <AlertTriangle className="size-10 mb-3 opacity-40" />
             <p className="text-sm font-medium">{error}</p>
             <Button
               variant="outline"
               size="sm"
-              className="mt-4"
+              className="mt-4 border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
               onClick={() => router.push("/dashboard")}
             >
               {t("backToDashboard")}
@@ -247,19 +247,19 @@ export default function EditReportPage() {
   if (!report) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-sentinel-surface">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-2xl font-bold text-white">{t("editTitle")}</h1>
+            <p className="text-sm text-sentinel-muted mt-1">
               {t("editSubtitle")}
             </p>
           </div>
           <Button
             variant="outline"
             size="sm"
-            className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+            className="text-red-400 border-red-500/30 hover:bg-red-500/10 hover:text-red-300"
             onClick={() => setDeleteDialogOpen(true)}
           >
             <Trash2 className="size-4 mr-1.5" />
@@ -268,12 +268,12 @@ export default function EditReportPage() {
         </div>
 
         {guest && (
-          <div className="mb-6 flex items-center gap-3 rounded-lg border bg-muted/30 px-4 py-3">
-            <User className="size-4 text-muted-foreground shrink-0" />
+          <div className="mb-6 flex items-center gap-3 rounded-lg border border-sentinel-border bg-sentinel-card px-4 py-3">
+            <User className="size-4 text-sentinel-muted shrink-0" />
             <div className="text-sm">
-              <span className="font-medium">{guest.full_name}</span>
+              <span className="font-medium text-white">{guest.full_name}</span>
               {guest.email && (
-                <span className="text-muted-foreground ml-2">
+                <span className="text-sentinel-muted ml-2">
                   ({guest.email})
                 </span>
               )}
@@ -282,36 +282,36 @@ export default function EditReportPage() {
         )}
 
         {formError && (
-          <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
-            <AlertTriangle className="size-5 shrink-0 text-red-500 mt-0.5" />
-            <p className="text-sm text-red-800">{formError}</p>
+          <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
+            <AlertTriangle className="size-5 shrink-0 text-red-400 mt-0.5" />
+            <p className="text-sm text-red-400">{formError}</p>
           </div>
         )}
 
-        <Card className="py-0 overflow-hidden">
+        <Card className="py-0 overflow-hidden bg-sentinel-card border-sentinel-border">
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Incident Details */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {t("incidentDetails")}
                 </h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="incident_type">
-                        {t("incidentType")} <span className="text-red-500">*</span>
+                      <Label htmlFor="incident_type" className="text-sentinel-text">
+                        {t("incidentType")} <span className="text-red-400">*</span>
                       </Label>
                       <Select
                         value={incidentType}
                         onValueChange={setIncidentType}
                       >
-                        <SelectTrigger id="incident_type" className="mt-1.5">
+                        <SelectTrigger id="incident_type" className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white">
                           <SelectValue placeholder={t("incidentTypePlaceholder")} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-sentinel-card border-sentinel-border">
                           {INCIDENT_TYPES.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
+                            <SelectItem key={type.value} value={type.value} className="text-sentinel-text hover:bg-sentinel-border">
                               {tIncident(type.value as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
                             </SelectItem>
                           ))}
@@ -319,20 +319,20 @@ export default function EditReportPage() {
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="incident_date">{t("incidentDate")}</Label>
+                      <Label htmlFor="incident_date" className="text-sentinel-text">{t("incidentDate")}</Label>
                       <Input
                         id="incident_date"
                         type="date"
                         value={incidentDate}
                         onChange={(e) => setIncidentDate(e.target.value)}
                         max={new Date().toISOString().split("T")[0]}
-                        className="mt-1.5"
+                        className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <Label>{t("severity")}</Label>
+                    <Label className="text-sentinel-text">{t("severity")}</Label>
                     <div className="flex items-center gap-2 mt-2">
                       {SEVERITY_LABELS.map((s) => (
                         <button
@@ -342,11 +342,11 @@ export default function EditReportPage() {
                           className={`flex flex-col items-center gap-1 rounded-lg border px-3 py-2 text-xs transition-colors ${
                             severity === s.value
                               ? s.value <= 2
-                                ? "border-yellow-400 bg-yellow-50 text-yellow-800"
+                                ? "border-yellow-500/50 bg-yellow-500/10 text-yellow-400"
                                 : s.value === 3
-                                  ? "border-orange-400 bg-orange-50 text-orange-800"
-                                  : "border-red-400 bg-red-50 text-red-800"
-                              : "border-gray-200 bg-white text-muted-foreground hover:border-gray-300"
+                                  ? "border-orange-500/50 bg-orange-500/10 text-orange-400"
+                                  : "border-red-500/50 bg-red-500/10 text-red-400"
+                              : "border-sentinel-border bg-sentinel-bg text-sentinel-muted hover:border-sentinel-muted/50"
                           }`}
                         >
                           <span className="font-semibold">{s.value}</span>
@@ -357,8 +357,8 @@ export default function EditReportPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="description">
-                      {t("description")} <span className="text-red-500">*</span>
+                    <Label htmlFor="description" className="text-sentinel-text">
+                      {t("description")} <span className="text-red-400">*</span>
                     </Label>
                     <Textarea
                       id="description"
@@ -367,9 +367,9 @@ export default function EditReportPage() {
                       onChange={(e) => setDescription(e.target.value)}
                       required
                       rows={5}
-                      className="mt-1.5 resize-none"
+                      className="mt-1.5 resize-none bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                     />
-                    <p className="text-xs text-muted-foreground mt-1 text-right">
+                    <p className="text-xs text-sentinel-muted mt-1 text-right">
                       {t("descriptionCounter", { count: description.trim().length })}
                     </p>
                   </div>
@@ -378,7 +378,7 @@ export default function EditReportPage() {
 
               {/* Photos Section */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {tUpload("title")}
                 </h2>
                 <PhotoUpload
@@ -390,30 +390,30 @@ export default function EditReportPage() {
 
               {/* Booking Details */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {t("bookingDetails")}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="property_name">{t("propertyName")}</Label>
+                    <Label htmlFor="property_name" className="text-sentinel-text">{t("propertyName")}</Label>
                     <Input
                       id="property_name"
                       type="text"
                       placeholder={t("propertyNamePlaceholder")}
                       value={propertyName}
                       onChange={(e) => setPropertyName(e.target.value)}
-                      className="mt-1.5"
+                      className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="platform">{t("platform")}</Label>
+                    <Label htmlFor="platform" className="text-sentinel-text">{t("platform")}</Label>
                     <Select value={platform} onValueChange={setPlatform}>
-                      <SelectTrigger id="platform" className="mt-1.5">
+                      <SelectTrigger id="platform" className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white">
                         <SelectValue placeholder={t("platformPlaceholder")} />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-sentinel-card border-sentinel-border">
                         {PLATFORMS.map((p) => (
-                          <SelectItem key={p.value} value={p.value}>
+                          <SelectItem key={p.value} value={p.value} className="text-sentinel-text hover:bg-sentinel-border">
                             {tPlatform(p.value as "airbnb" | "booking" | "direct" | "other")}
                           </SelectItem>
                         ))}
@@ -429,7 +429,7 @@ export default function EditReportPage() {
                   type="button"
                   variant="outline"
                   onClick={() => router.back()}
-                  className="flex-1"
+                  className="flex-1 border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
                   size="lg"
                 >
                   {tCommon("cancel")}
@@ -437,7 +437,7 @@ export default function EditReportPage() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1"
+                  className="flex-1 bg-sentinel-accent text-black hover:bg-amber-400 font-semibold"
                   size="lg"
                 >
                   {submitting ? (
@@ -456,16 +456,17 @@ export default function EditReportPage() {
       </div>
 
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md bg-sentinel-card border-sentinel-border">
           <DialogHeader>
-            <DialogTitle>{t("deleteTitle")}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-white">{t("deleteTitle")}</DialogTitle>
+            <DialogDescription className="text-sentinel-muted">
               {t("deleteConfirm")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
               variant="outline"
+              className="border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
               onClick={() => setDeleteDialogOpen(false)}
               disabled={deleting}
             >

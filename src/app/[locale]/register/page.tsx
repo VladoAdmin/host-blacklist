@@ -61,23 +61,23 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-sentinel-bg px-4">
+        <Card className="w-full max-w-md bg-sentinel-card border-sentinel-border">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-green-600">
+            <CardTitle className="text-2xl font-bold text-green-400">
               {t("accountCreated")}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sentinel-muted">
               {t("checkEmail")}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-sentinel-muted mb-4">
               {t("confirmEmailDesc")}
             </p>
             <Link
               href="/login"
-              className="text-blue-600 hover:underline font-medium text-sm"
+              className="text-sentinel-accent hover:underline font-medium text-sm"
             >
               {t("backToLogin")}
             </Link>
@@ -88,11 +88,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-sentinel-bg px-4">
+      <Card className="w-full max-w-md bg-sentinel-card border-sentinel-border">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">{t("createAccount")}</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-2xl font-bold text-white">{t("createAccount")}</CardTitle>
+          <CardDescription className="text-sentinel-muted">
             {t("joinDescription")}
           </CardDescription>
         </CardHeader>
@@ -100,10 +100,10 @@ export default function RegisterPage() {
           <OAuthButtons redirectTo="/dashboard" />
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t border-sentinel-border" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
+              <span className="bg-sentinel-card px-2 text-sentinel-muted">
                 {t("orContinueWithEmail")}
               </span>
             </div>
@@ -117,7 +117,7 @@ export default function RegisterPage() {
               </Alert>
             )}
             <div className="space-y-2">
-              <Label htmlFor="fullName">{t("fullName")}</Label>
+              <Label htmlFor="fullName" className="text-sentinel-text">{t("fullName")}</Label>
               <Input
                 id="fullName"
                 type="text"
@@ -126,10 +126,11 @@ export default function RegisterPage() {
                 onChange={(e) => setFullName(e.target.value)}
                 required
                 autoComplete="name"
+                className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">{t("email")}</Label>
+              <Label htmlFor="email" className="text-sentinel-text">{t("email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -138,10 +139,11 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
+                className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">{t("password")}</Label>
+              <Label htmlFor="password" className="text-sentinel-text">{t("password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -151,10 +153,11 @@ export default function RegisterPage() {
                 required
                 autoComplete="new-password"
                 minLength={6}
+                className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
+              <Label htmlFor="confirmPassword" className="text-sentinel-text">{t("confirmPassword")}</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -164,18 +167,19 @@ export default function RegisterPage() {
                 required
                 autoComplete="new-password"
                 minLength={6}
+                className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
               />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-sentinel-accent text-black hover:bg-amber-400 font-semibold" disabled={loading}>
               {loading ? t("creatingAccount") : t("createAccount")}
             </Button>
-            <p className="text-sm text-gray-600 text-center">
+            <p className="text-sm text-sentinel-muted text-center">
               {t("hasAccount")}{" "}
               <Link
                 href="/login"
-                className="text-blue-600 hover:underline font-medium"
+                className="text-sentinel-accent hover:underline font-medium"
               >
                 {t("signIn")}
               </Link>

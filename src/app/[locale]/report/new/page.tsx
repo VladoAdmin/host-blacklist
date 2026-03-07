@@ -53,10 +53,10 @@ export default function NewReportPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-sentinel-surface">
         <div className="flex flex-col items-center gap-3">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          <p className="text-sm text-muted-foreground">{tCommon("loading")}</p>
+          <div className="size-8 animate-spin rounded-full border-2 border-sentinel-muted border-t-transparent" />
+          <p className="text-sm text-sentinel-muted">{tCommon("loading")}</p>
         </div>
       </div>
     );
@@ -157,12 +157,12 @@ export default function NewReportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-sentinel-surface">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{t("title")}</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-2xl font-bold text-white">{t("title")}</h1>
+            <p className="text-sm text-sentinel-muted mt-1">
               {t("subtitle")}
             </p>
           </div>
@@ -170,24 +170,24 @@ export default function NewReportPage() {
         </div>
 
         {error && (
-          <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
-            <AlertTriangle className="size-5 shrink-0 text-red-500 mt-0.5" />
-            <p className="text-sm text-red-800">{error}</p>
+          <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
+            <AlertTriangle className="size-5 shrink-0 text-red-400 mt-0.5" />
+            <p className="text-sm text-red-400">{error}</p>
           </div>
         )}
 
-        <Card className="py-0 overflow-hidden">
+        <Card className="py-0 overflow-hidden bg-sentinel-card border-sentinel-border">
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Guest Information Section */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {t("guestInfo")}
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="guest_name">
-                      {t("guestName")} <span className="text-red-500">*</span>
+                    <Label htmlFor="guest_name" className="text-sentinel-text">
+                      {t("guestName")} <span className="text-red-400">*</span>
                     </Label>
                     <Input
                       id="guest_name"
@@ -196,34 +196,34 @@ export default function NewReportPage() {
                       value={guestName}
                       onChange={(e) => setGuestName(e.target.value)}
                       required
-                      className="mt-1.5"
+                      className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="guest_email">{t("guestEmail")}</Label>
+                      <Label htmlFor="guest_email" className="text-sentinel-text">{t("guestEmail")}</Label>
                       <Input
                         id="guest_email"
                         type="email"
                         placeholder={t("guestEmailPlaceholder")}
                         value={guestEmail}
                         onChange={(e) => setGuestEmail(e.target.value)}
-                        className="mt-1.5"
+                        className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                       />
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-sentinel-muted mt-1">
                         {t("guestEmailHelp")}
                       </p>
                     </div>
                     <div>
-                      <Label htmlFor="guest_phone">{t("guestPhone")}</Label>
+                      <Label htmlFor="guest_phone" className="text-sentinel-text">{t("guestPhone")}</Label>
                       <Input
                         id="guest_phone"
                         type="tel"
                         placeholder={t("guestPhonePlaceholder")}
                         value={guestPhone}
                         onChange={(e) => setGuestPhone(e.target.value)}
-                        className="mt-1.5"
+                        className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                       />
                     </div>
                   </div>
@@ -232,25 +232,25 @@ export default function NewReportPage() {
 
               {/* Incident Details Section */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {t("incidentDetails")}
                 </h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="incident_type">
-                        {t("incidentType")} <span className="text-red-500">*</span>
+                      <Label htmlFor="incident_type" className="text-sentinel-text">
+                        {t("incidentType")} <span className="text-red-400">*</span>
                       </Label>
                       <Select
                         value={incidentType}
                         onValueChange={setIncidentType}
                       >
-                        <SelectTrigger id="incident_type" className="mt-1.5">
+                        <SelectTrigger id="incident_type" className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white">
                           <SelectValue placeholder={t("incidentTypePlaceholder")} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-sentinel-card border-sentinel-border">
                           {INCIDENT_TYPES.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
+                            <SelectItem key={type.value} value={type.value} className="text-sentinel-text hover:bg-sentinel-border">
                               {tIncident(type.value as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
                             </SelectItem>
                           ))}
@@ -258,21 +258,21 @@ export default function NewReportPage() {
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="incident_date">{t("incidentDate")}</Label>
+                      <Label htmlFor="incident_date" className="text-sentinel-text">{t("incidentDate")}</Label>
                       <Input
                         id="incident_date"
                         type="date"
                         value={incidentDate}
                         onChange={(e) => setIncidentDate(e.target.value)}
                         max={new Date().toISOString().split("T")[0]}
-                        className="mt-1.5"
+                        className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white"
                       />
                     </div>
                   </div>
 
                   {/* Severity */}
                   <div>
-                    <Label>{t("severity")}</Label>
+                    <Label className="text-sentinel-text">{t("severity")}</Label>
                     <div className="flex items-center gap-2 mt-2">
                       {SEVERITY_LABELS.map((s) => (
                         <button
@@ -282,11 +282,11 @@ export default function NewReportPage() {
                           className={`flex flex-col items-center gap-1 rounded-lg border px-3 py-2 text-xs transition-colors ${
                             severity === s.value
                               ? s.value <= 2
-                                ? "border-yellow-400 bg-yellow-50 text-yellow-800"
+                                ? "border-yellow-500/50 bg-yellow-500/10 text-yellow-400"
                                 : s.value === 3
-                                  ? "border-orange-400 bg-orange-50 text-orange-800"
-                                  : "border-red-400 bg-red-50 text-red-800"
-                              : "border-gray-200 bg-white text-muted-foreground hover:border-gray-300"
+                                  ? "border-orange-500/50 bg-orange-500/10 text-orange-400"
+                                  : "border-red-500/50 bg-red-500/10 text-red-400"
+                              : "border-sentinel-border bg-sentinel-bg text-sentinel-muted hover:border-sentinel-muted/50"
                           }`}
                         >
                           <span className="font-semibold">{s.value}</span>
@@ -297,8 +297,8 @@ export default function NewReportPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="description">
-                      {t("description")} <span className="text-red-500">*</span>
+                    <Label htmlFor="description" className="text-sentinel-text">
+                      {t("description")} <span className="text-red-400">*</span>
                     </Label>
                     <Textarea
                       id="description"
@@ -307,9 +307,9 @@ export default function NewReportPage() {
                       onChange={(e) => setDescription(e.target.value)}
                       required
                       rows={5}
-                      className="mt-1.5 resize-none"
+                      className="mt-1.5 resize-none bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                     />
-                    <p className="text-xs text-muted-foreground mt-1 text-right">
+                    <p className="text-xs text-sentinel-muted mt-1 text-right">
                       {t("descriptionCounter", { count: description.trim().length })}
                     </p>
                   </div>
@@ -318,7 +318,7 @@ export default function NewReportPage() {
 
               {/* Photos Section */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {tUpload("title")}
                 </h2>
                 <PhotoUpload
@@ -330,30 +330,30 @@ export default function NewReportPage() {
 
               {/* Property & Platform Section */}
               <div>
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <h2 className="text-sm font-semibold text-sentinel-muted uppercase tracking-wider mb-4">
                   {t("bookingDetails")}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="property_name">{t("propertyName")}</Label>
+                    <Label htmlFor="property_name" className="text-sentinel-text">{t("propertyName")}</Label>
                     <Input
                       id="property_name"
                       type="text"
                       placeholder={t("propertyNamePlaceholder")}
                       value={propertyName}
                       onChange={(e) => setPropertyName(e.target.value)}
-                      className="mt-1.5"
+                      className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="platform">{t("platform")}</Label>
+                    <Label htmlFor="platform" className="text-sentinel-text">{t("platform")}</Label>
                     <Select value={platform} onValueChange={setPlatform}>
-                      <SelectTrigger id="platform" className="mt-1.5">
+                      <SelectTrigger id="platform" className="mt-1.5 bg-sentinel-bg border-sentinel-border text-white">
                         <SelectValue placeholder={t("platformPlaceholder")} />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-sentinel-card border-sentinel-border">
                         {PLATFORMS.map((p) => (
-                          <SelectItem key={p.value} value={p.value}>
+                          <SelectItem key={p.value} value={p.value} className="text-sentinel-text hover:bg-sentinel-border">
                             {tPlatform(p.value as "airbnb" | "booking" | "direct" | "other")}
                           </SelectItem>
                         ))}
@@ -368,7 +368,7 @@ export default function NewReportPage() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="w-full"
+                  className="w-full bg-sentinel-accent text-black hover:bg-amber-400 font-semibold"
                   size="lg"
                 >
                   {submitting ? (

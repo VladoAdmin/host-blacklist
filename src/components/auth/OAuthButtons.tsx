@@ -85,12 +85,12 @@ export default function OAuthButtons({ redirectTo }: OAuthButtonsProps) {
   return (
     <div className="space-y-3">
       {error && (
-        <p className="text-sm text-red-600 text-center">{error}</p>
+        <p className="text-sm text-red-400 text-center">{error}</p>
       )}
       <Button
         type="button"
         variant="outline"
-        className="w-full"
+        className="w-full border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
         onClick={() => handleOAuthLogin("google")}
         disabled={isLoading}
       >
@@ -100,7 +100,7 @@ export default function OAuthButtons({ redirectTo }: OAuthButtonsProps) {
       <Button
         type="button"
         variant="outline"
-        className="w-full"
+        className="w-full border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
         onClick={() => handleOAuthLogin("facebook")}
         disabled={isLoading}
       >

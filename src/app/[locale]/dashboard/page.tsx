@@ -13,12 +13,12 @@ import { FileText, Users, Plus, Search, Pencil, ArrowRight } from "lucide-react"
 // --- Shared helpers ---
 
 const INCIDENT_COLORS: Record<string, string> = {
-  damage: "bg-red-100 text-red-800 border-red-200",
-  theft: "bg-red-100 text-red-800 border-red-200",
-  fraud: "bg-red-100 text-red-800 border-red-200",
-  noise: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  no_show: "bg-gray-100 text-gray-800 border-gray-200",
-  other: "bg-blue-100 text-blue-800 border-blue-200",
+  damage: "bg-red-500/20 text-red-400 border-red-500/30",
+  theft: "bg-red-500/20 text-red-400 border-red-500/30",
+  fraud: "bg-red-500/20 text-red-400 border-red-500/30",
+  noise: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  no_show: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+  other: "bg-blue-500/20 text-blue-400 border-blue-500/30",
 };
 
 function SeverityDots({ severity }: { severity: number }) {
@@ -28,7 +28,7 @@ function SeverityDots({ severity }: { severity: number }) {
         <span
           key={i}
           className={`inline-block size-2.5 rounded-full ${
-            i < severity ? "bg-red-500" : "bg-gray-200"
+            i < severity ? "bg-red-500" : "bg-sentinel-border"
           }`}
         />
       ))}
@@ -64,17 +64,17 @@ interface DashboardData {
 function DashboardSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
-      <div className="h-8 w-64 bg-gray-200 rounded" />
+      <div className="h-8 w-64 bg-sentinel-card rounded" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-28 bg-gray-200 rounded-lg" />
+          <div key={i} className="h-28 bg-sentinel-card rounded-lg" />
         ))}
       </div>
-      <div className="h-12 bg-gray-200 rounded-lg" />
+      <div className="h-12 bg-sentinel-card rounded-lg" />
       <div className="space-y-3">
-        <div className="h-6 w-48 bg-gray-200 rounded" />
+        <div className="h-6 w-48 bg-sentinel-card rounded" />
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-20 bg-gray-200 rounded-lg" />
+          <div key={i} className="h-20 bg-sentinel-card rounded-lg" />
         ))}
       </div>
     </div>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
 
   if (authLoading || dataLoading) {
     return (
-      <div className="bg-gray-50 min-h-[calc(100vh-4rem)]">
+      <div className="bg-sentinel-surface min-h-[calc(100vh-4rem)]">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <DashboardSkeleton />
         </div>
@@ -135,9 +135,9 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="bg-gray-50 min-h-[calc(100vh-4rem)]">
+      <div className="bg-sentinel-surface min-h-[calc(100vh-4rem)]">
         <div className="max-w-6xl mx-auto px-4 py-8">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-400">
             {error}
           </div>
         </div>
@@ -149,54 +149,54 @@ export default function DashboardPage() {
   const reports = data?.my_reports ?? [];
 
   return (
-    <div className="bg-gray-50 min-h-[calc(100vh-4rem)]">
+    <div className="bg-sentinel-surface min-h-[calc(100vh-4rem)]">
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {/* Welcome */}
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-white">
           {t("welcomeBack", { name: profile?.full_name || "User" })}
         </h1>
 
         {/* Stats cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Card>
+          <Card className="bg-sentinel-card border-sentinel-border">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400">
                 <FileText className="size-6" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">{t("myReports")}</p>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-sm text-sentinel-muted">{t("myReports")}</p>
+                <p className="text-3xl font-bold text-white">
                   {stats.my_reports_count}
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-sentinel-card border-sentinel-border">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-purple-500/15 text-purple-400">
                 <Users className="size-6" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">{t("totalGuests")}</p>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-sm text-sentinel-muted">{t("totalGuests")}</p>
+                <p className="text-3xl font-bold text-white">
                   {stats.total_guests}
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-blue-600 text-white border-blue-600">
+          <Card className="bg-sentinel-accent border-sentinel-accent">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-blue-500">
-                <Plus className="size-6 text-white" />
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-black/20">
+                <Plus className="size-6 text-black" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-blue-100">{t("quickAction")}</p>
+                <p className="text-sm text-black/70">{t("quickAction")}</p>
                 <Link href="/report/new">
                   <Button
                     variant="secondary"
-                    className="mt-1 bg-white text-blue-600 hover:bg-blue-50"
+                    className="mt-1 bg-black text-sentinel-accent hover:bg-gray-900"
                   >
                     {t("addReport")}
                   </Button>
@@ -207,26 +207,26 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick search */}
-        <Card>
+        <Card className="bg-sentinel-card border-sentinel-border">
           <CardContent className="p-4">
             <form onSubmit={handleSearch} className="flex gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-sentinel-muted" />
                 <Input
                   type="text"
                   placeholder={t("quickSearch")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                 />
               </div>
-              <Button type="submit" variant="default">
+              <Button type="submit" className="bg-sentinel-accent text-black hover:bg-amber-400 font-semibold">
                 {t("myReports").split(" ")[0] === "Moje" ? "Hľadať" : "Search"}
               </Button>
             </form>
             <Link
               href="/search"
-              className="inline-flex items-center gap-1 mt-2 text-sm text-blue-600 hover:text-blue-800"
+              className="inline-flex items-center gap-1 mt-2 text-sm text-sentinel-accent hover:text-amber-400"
             >
               {t("goToFullSearch")}
               <ArrowRight className="size-3" />
@@ -236,19 +236,19 @@ export default function DashboardPage() {
 
         {/* My Recent Reports */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4">
             {t("myRecentReports")}
           </h2>
 
           {reports.length === 0 ? (
-            <Card>
+            <Card className="bg-sentinel-card border-sentinel-border">
               <CardContent className="p-8 text-center">
-                <FileText className="mx-auto size-10 text-gray-300 mb-3" />
-                <p className="text-gray-500 mb-4">
+                <FileText className="mx-auto size-10 text-sentinel-border mb-3" />
+                <p className="text-sentinel-muted mb-4">
                   {t("noReportsYet")}
                 </p>
                 <Link href="/report/new">
-                  <Button>{t("addReport")}</Button>
+                  <Button className="bg-sentinel-accent text-black hover:bg-amber-400 font-semibold">{t("addReport")}</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -263,14 +263,14 @@ export default function DashboardPage() {
                   : new Date(report.created_at).toLocaleDateString();
 
                 return (
-                  <Card key={report.id} className="hover:shadow-md transition-shadow">
+                  <Card key={report.id} className="bg-sentinel-card border-sentinel-border hover:border-sentinel-accent/30 transition-colors">
                     <CardContent className="p-4">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-wrap items-center gap-2 mb-1">
                             <Link
                               href={`/guest/${report.guest_id}` as "/dashboard"}
-                              className="font-medium text-blue-600 hover:text-blue-800 hover:underline truncate"
+                              className="font-medium text-sentinel-accent hover:text-amber-400 hover:underline truncate"
                             >
                               {report.guest_name}
                             </Link>
@@ -281,7 +281,7 @@ export default function DashboardPage() {
                               {tIncident(report.incident_type as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")}
                             </Badge>
                           </div>
-                          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-sentinel-muted">
                             <span>{dateStr}</span>
                             {report.property_name && (
                               <span className="truncate">
@@ -297,7 +297,7 @@ export default function DashboardPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="text-gray-400 hover:text-gray-600"
+                              className="text-sentinel-muted hover:text-white"
                             >
                               <Pencil className="size-4" />
                               <span className="sr-only">{t("editReport")}</span>

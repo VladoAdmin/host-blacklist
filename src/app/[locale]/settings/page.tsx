@@ -88,26 +88,26 @@ export default function SettingsPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="size-6 animate-spin text-gray-400" />
+        <Loader2 className="size-6 animate-spin text-sentinel-muted" />
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-sentinel-surface">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6"
+          className="inline-flex items-center gap-1 text-sm text-sentinel-muted hover:text-white mb-6"
         >
           <ArrowLeft className="size-4" />
           {t("backToDashboard")}
         </Link>
 
-        <Card>
+        <Card className="bg-sentinel-card border-sentinel-border">
           <CardHeader>
-            <CardTitle className="text-xl">{t("title")}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl text-white">{t("title")}</CardTitle>
+            <CardDescription className="text-sentinel-muted">
               {t("subtitle")}
             </CardDescription>
           </CardHeader>
@@ -120,22 +120,22 @@ export default function SettingsPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">{t("email")}</Label>
+                <Label htmlFor="email" className="text-sentinel-text">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={user?.email || ""}
                   disabled
-                  className="bg-gray-50"
+                  className="bg-sentinel-bg border-sentinel-border text-sentinel-muted"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-sentinel-muted">
                   {t("emailReadOnly")}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="full_name">
-                  {t("fullName")} <span className="text-red-500">*</span>
+                <Label htmlFor="full_name" className="text-sentinel-text">
+                  {t("fullName")} <span className="text-red-400">*</span>
                 </Label>
                 <Input
                   id="full_name"
@@ -145,11 +145,12 @@ export default function SettingsPage() {
                   onChange={(e) => setFullName(e.target.value)}
                   required
                   autoComplete="name"
+                  className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="company_name">{t("companyName")}</Label>
+                <Label htmlFor="company_name" className="text-sentinel-text">{t("companyName")}</Label>
                 <Input
                   id="company_name"
                   type="text"
@@ -157,11 +158,12 @@ export default function SettingsPage() {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   autoComplete="organization"
+                  className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="city">{t("city")}</Label>
+                <Label htmlFor="city" className="text-sentinel-text">{t("city")}</Label>
                 <Input
                   id="city"
                   type="text"
@@ -169,11 +171,12 @@ export default function SettingsPage() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   autoComplete="address-level2"
+                  className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="country">{t("country")}</Label>
+                <Label htmlFor="country" className="text-sentinel-text">{t("country")}</Label>
                 <Input
                   id="country"
                   type="text"
@@ -181,11 +184,12 @@ export default function SettingsPage() {
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                   autoComplete="country-name"
+                  className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="properties_count">
+                <Label htmlFor="properties_count" className="text-sentinel-text">
                   {t("propertiesCount")}
                 </Label>
                 <Input
@@ -199,15 +203,16 @@ export default function SettingsPage() {
                       Math.max(1, parseInt(e.target.value) || 1)
                     )
                   }
+                  className="bg-sentinel-bg border-sentinel-border text-white"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-sentinel-muted">
                   {t("propertiesCountHelp")}
                 </p>
               </div>
             </CardContent>
 
             <CardFooter>
-              <Button type="submit" disabled={saving} className="w-full">
+              <Button type="submit" disabled={saving} className="w-full bg-sentinel-accent text-black hover:bg-amber-400 font-semibold">
                 {saving ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />

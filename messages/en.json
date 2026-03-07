@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Host Blacklist",
+    "appName": "Sentinel HostGuard",
     "loading": "Loading...",
     "error": "Something went wrong",
     "save": "Save",
@@ -16,15 +16,15 @@
   "landing": {
     "signIn": "Sign In",
     "getStarted": "Get Started",
-    "hero": "Protect Your Property from Problem Guests",
-    "subtitle": "Community-driven platform where hosts share and search guest history. Check guests before confirming reservations.",
-    "cta": "Start Checking Guests — Free",
-    "feature1Title": "Search in Seconds",
-    "feature1Desc": "Enter a guest name or email. See reports from other hosts instantly.",
+    "hero": "Protect Your Property. Verify Every Guest.",
+    "subtitle": "Security platform for hosts. Share and search guest history before confirming reservations.",
+    "cta": "Start Verifying Guests — Free",
+    "feature1Title": "Verification in Seconds",
+    "feature1Desc": "Enter a guest name or email. Instantly see reports and warnings from other hosts.",
     "feature2Title": "Share Experiences",
-    "feature2Desc": "Report problem guests. Help other hosts avoid damage, theft, and fraud.",
-    "feature3Title": "Community-Driven",
-    "feature3Desc": "Built by hosts, for hosts. Flag false reports. Quality over quantity."
+    "feature2Desc": "Report problem guests. Help the community avoid damage, theft, and fraud.",
+    "feature3Title": "Host Community",
+    "feature3Desc": "Built by hosts, for hosts. Verified reports. Quality over quantity."
   },
   "auth": {
     "signIn": "Sign In",
@@ -32,7 +32,7 @@
     "signOut": "Sign Out",
     "signingIn": "Signing in...",
     "creatingAccount": "Creating account...",
-    "welcomeBack": "Welcome back to Host Blacklist",
+    "welcomeBack": "Welcome back to Sentinel HostGuard",
     "orContinueWithEmail": "Or continue with email",
     "email": "Email",
     "emailPlaceholder": "you@example.com",
@@ -46,7 +46,7 @@
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "createAccount": "Create Account",
-    "joinDescription": "Join Host Blacklist to protect your property",
+    "joinDescription": "Join Sentinel HostGuard to protect your property",
     "accountCreated": "Account Created!",
     "checkEmail": "Check your email for a confirmation link, or you'll be redirected to the dashboard shortly.",
     "passwordsNoMatch": "Passwords do not match",
@@ -65,7 +65,7 @@
     "navigationMenu": "Navigation menu"
   },
   "footer": {
-    "copyright": "© 2026 Host Blacklist. All rights reserved."
+    "copyright": "© 2026 Sentinel HostGuard. All rights reserved."
   },
   "dashboard": {
     "welcomeBack": "Welcome back, {name}",
