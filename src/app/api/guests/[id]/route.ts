@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
-function maskEmail(email: string): string {
+function maskEmail(email: string | null | undefined): string {
+  if (!email) return "";
   const [local, domain] = email.split("@");
   if (!local || !domain) return "***@***";
   const masked = local.length > 1 ? local[0] + "***" : "***";
