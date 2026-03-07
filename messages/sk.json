@@ -53,7 +53,9 @@
     "passwordMinError": "Heslo musí mať aspoň 6 znakov",
     "continueWithGoogle": "Pokračovať cez Google",
     "continueWithFacebook": "Pokračovať cez Facebook",
-    "redirecting": "Presmerovanie..."
+    "redirecting": "Presmerovanie...",
+    "confirmEmailDesc": "Na vašu emailovú adresu sme odoslali overovací odkaz. Kliknite naň pre aktiváciu účtu.",
+    "backToLogin": "Späť na prihlásenie"
   },
   "nav": {
     "search": "Hľadať",

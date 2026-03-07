@@ -53,7 +53,9 @@
     "passwordMinError": "Password must be at least 6 characters",
     "continueWithGoogle": "Continue with Google",
     "continueWithFacebook": "Continue with Facebook",
-    "redirecting": "Redirecting..."
+    "redirecting": "Redirecting...",
+    "confirmEmailDesc": "We sent a verification link to your email address. Click it to activate your account.",
+    "backToLogin": "Back to login"
   },
   "nav": {
     "search": "Search",

@@ -56,11 +56,7 @@ export default function RegisterPage() {
 
     setSuccess(true);
     setLoading(false);
-
-    setTimeout(() => {
-      router.push("/dashboard");
-      router.refresh();
-    }, 1500);
+    // Do NOT auto-redirect — wait for email confirmation
   };
 
   if (success) {
@@ -75,6 +71,17 @@ export default function RegisterPage() {
               {t("checkEmail")}
             </CardDescription>
           </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-sm text-gray-600 mb-4">
+              {t("confirmEmailDesc")}
+            </p>
+            <Link
+              href="/login"
+              className="text-blue-600 hover:underline font-medium text-sm"
+            >
+              {t("backToLogin")}
+            </Link>
+          </CardContent>
         </Card>
       </div>
     );
