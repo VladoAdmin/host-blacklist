@@ -98,6 +98,11 @@
 ### I.3 Sub-Agent Runs (v2)
 | Task | Agent | Label | Status | Commit/Výstup |
 |------|-------|-------|--------|---------------|
+| BUG-001: Fix infinite loading | Orchestrator | factory-orchestrator | ✅ Done | 325f9dd |
+| BUG-002: Remove test banner | Orchestrator | factory-orchestrator | ✅ Done | 325f9dd |
+| DATA-001: Migrate black_list data | Orchestrator | factory-orchestrator | ⏸️ BLOCKED — needs Supabase service_role key | 001_migrate_blacklist_to_guests.sql |
+| TASK-005: Add entry form | Orchestrator | factory-orchestrator | ✅ Done (already exists) | Uses /report/new |
+| TASK-010: Dashboard stats | Orchestrator | factory-orchestrator | ✅ Done (API OK, data pending migration) | — |
 | PROJECT_SNAPSHOT | Scanner | scanner-host-blacklist-v2 | ✅ Done | PROJECT_SNAPSHOT.md |
 | TASK-101 Google OAuth | Coder | coder-TASK-101-v1 | ✅ Done | commit 3e6699e |
 | TASK-102 Facebook Integration | Coder | coder-TASK-102-v1 | ✅ Done | commit ccb68a9 |
