@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
     description,
     property_name,
     platform,
+    photo_urls,
   } = body as {
     guest_name?: string;
     guest_email?: string;
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
     description?: string;
     property_name?: string;
     platform?: string;
+    photo_urls?: string[];
   };
 
   // Validate required fields
@@ -154,6 +156,16 @@ export async function POST(request: NextRequest) {
     guestId = newGuest.id;
   }
 
+  // Validate photo_urls if provided
+  const validPhotoUrls: string[] = [];
+  if (photo_urls && Array.isArray(photo_urls)) {
+    for (const url of photo_urls.slice(0, 3)) {
+      if (typeof url === "string" && url.startsWith("https://")) {
+        validPhotoUrls.push(url);
+      }
+    }
+  }
+
   // Create report
   const { data: report, error: reportError } = await supabase
     .from("reports")
@@ -166,6 +178,7 @@ export async function POST(request: NextRequest) {
       description: description!.trim(),
       property_name: property_name?.trim() || null,
       platform: platform || null,
+      photo_urls: validPhotoUrls,
     })
     .select("id")
     .single();

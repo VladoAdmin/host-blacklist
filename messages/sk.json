@@ -203,6 +203,32 @@
     "4": "Vysoký",
     "5": "Kritický"
   },
+  "upload": {
+    "title": "Fotky",
+    "photo": "Fotka",
+    "dropOrClick": "Pretiahnite fotky sem alebo kliknite pre výber",
+    "maxPhotos": "{current}/{max} fotiek",
+    "maxReached": "Maximum {max} fotiek",
+    "invalidType": "Povolené sú len JPEG, PNG a WebP obrázky",
+    "uploading": "Nahrávam...",
+    "uploadFailed": "Nahrávanie zlyhalo",
+    "photosLabel": "{count, plural, one {# fotka} few {# fotky} other {# fotiek}}"
+  },
+  "ocr": {
+    "importButton": "Importovať z screenshotu",
+    "dialogTitle": "Importovať z screenshotu",
+    "dialogDescription": "Nahrajte screenshot rezervácie z Airbnb, Booking.com alebo inej platformy. AI extrahuje údaje a predvyplní formulár.",
+    "selectScreenshot": "Vyberte screenshot rezervácie",
+    "supportedFormats": "JPEG, PNG alebo WebP",
+    "changeImage": "Zmeniť obrázok",
+    "processing": "Spracovávam...",
+    "extract": "Extrahovať údaje",
+    "cancel": "Zrušiť",
+    "processFailed": "Nepodarilo sa spracovať obrázok",
+    "invalidType": "Povolené sú len JPEG, PNG a WebP obrázky",
+    "importSuccess": "Údaje boli importované zo screenshotu",
+    "importPartial": "Niektoré údaje sa nepodarilo rozpoznať"
+  },
   "language": {
     "switchLanguage": "Jazyk",
     "sk": "Slovenčina",

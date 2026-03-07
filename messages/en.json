@@ -203,6 +203,32 @@
     "4": "High",
     "5": "Critical"
   },
+  "upload": {
+    "title": "Photos",
+    "photo": "Photo",
+    "dropOrClick": "Drag photos here or click to select",
+    "maxPhotos": "{current}/{max} photos",
+    "maxReached": "Maximum {max} photos",
+    "invalidType": "Only JPEG, PNG, and WebP images are allowed",
+    "uploading": "Uploading...",
+    "uploadFailed": "Upload failed",
+    "photosLabel": "{count, plural, one {# photo} other {# photos}}"
+  },
+  "ocr": {
+    "importButton": "Import from screenshot",
+    "dialogTitle": "Import from Screenshot",
+    "dialogDescription": "Upload a booking screenshot from Airbnb, Booking.com, or another platform. AI will extract data and pre-fill the form.",
+    "selectScreenshot": "Select a booking screenshot",
+    "supportedFormats": "JPEG, PNG, or WebP",
+    "changeImage": "Change image",
+    "processing": "Processing...",
+    "extract": "Extract Data",
+    "cancel": "Cancel",
+    "processFailed": "Failed to process image",
+    "invalidType": "Only JPEG, PNG, and WebP images are allowed",
+    "importSuccess": "Data imported from screenshot",
+    "importPartial": "Some data could not be recognized"
+  },
   "language": {
     "switchLanguage": "Language",
     "sk": "Slovenčina",

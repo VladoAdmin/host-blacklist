@@ -20,7 +20,7 @@ export async function GET(
   const { data: report, error } = await supabase
     .from("reports")
     .select(
-      "id, guest_id, reporter_id, incident_type, incident_date, severity, description, property_name, platform, created_at, updated_at"
+      "id, guest_id, reporter_id, incident_type, incident_date, severity, description, property_name, platform, photo_urls, created_at, updated_at"
     )
     .eq("id", id)
     .single();
@@ -92,7 +92,7 @@ export async function PUT(
     );
   }
 
-  const { incident_type, incident_date, severity, description, property_name, platform } =
+  const { incident_type, incident_date, severity, description, property_name, platform, photo_urls } =
     body as {
       incident_type?: string;
       incident_date?: string;
@@ -100,6 +100,7 @@ export async function PUT(
       description?: string;
       property_name?: string;
       platform?: string;
+      photo_urls?: string[];
     };
 
   // Validate
@@ -138,6 +139,16 @@ export async function PUT(
     return NextResponse.json({ error: errors.join(". ") }, { status: 400 });
   }
 
+  // Validate photo_urls if provided
+  const validPhotoUrls: string[] = [];
+  if (photo_urls && Array.isArray(photo_urls)) {
+    for (const url of photo_urls.slice(0, 3)) {
+      if (typeof url === "string" && url.startsWith("https://")) {
+        validPhotoUrls.push(url);
+      }
+    }
+  }
+
   const { data: updated, error: updateError } = await supabase
     .from("reports")
     .update({
@@ -147,6 +158,7 @@ export async function PUT(
       description: description!.trim(),
       property_name: property_name?.trim() || null,
       platform: platform || null,
+      photo_urls: validPhotoUrls,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)

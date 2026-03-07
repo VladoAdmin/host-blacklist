@@ -55,7 +55,7 @@ export async function GET(
   const { data: reports, error: reportsError } = await supabase
     .from("reports")
     .select(
-      "id, incident_type, incident_date, severity, description, property_name, platform, created_at, reporter_id"
+      "id, incident_type, incident_date, severity, description, property_name, platform, photo_urls, created_at, reporter_id"
     )
     .eq("guest_id", id)
     .order("created_at", { ascending: false });
@@ -113,6 +113,7 @@ export async function GET(
     description: r.description,
     property_name: r.property_name,
     platform: r.platform,
+    photo_urls: r.photo_urls || [],
     created_at: r.created_at,
     reporter: anonymizeReporter(profilesMap.get(r.reporter_id) ?? null),
     reporter_id: r.reporter_id,

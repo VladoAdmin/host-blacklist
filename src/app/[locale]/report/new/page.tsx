@@ -19,6 +19,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
 import { INCIDENT_TYPES, PLATFORMS, SEVERITY_LABELS } from "@/lib/constants";
 import { AlertTriangle, Loader2 } from "lucide-react";
+import PhotoUpload from "@/components/report/PhotoUpload";
+import OcrImport, { type OcrResult } from "@/components/report/OcrImport";
 
 export default function NewReportPage() {
   const router = useRouter();
@@ -28,6 +30,8 @@ export default function NewReportPage() {
   const tPlatform = useTranslations("platforms");
   const tSeverity = useTranslations("severityLabels");
   const tCommon = useTranslations("common");
+  const tUpload = useTranslations("upload");
+  const tOcr = useTranslations("ocr");
 
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
@@ -38,6 +42,7 @@ export default function NewReportPage() {
   const [description, setDescription] = useState("");
   const [propertyName, setPropertyName] = useState("");
   const [platform, setPlatform] = useState("");
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,6 +60,37 @@ export default function NewReportPage() {
         </div>
       </div>
     );
+  }
+
+  function handleOcrImport(data: OcrResult, screenshotUrl: string) {
+    if (data.guest_name) setGuestName(data.guest_name);
+    if (data.platform) {
+      const p = data.platform.toLowerCase();
+      if (["airbnb", "booking", "direct", "other"].includes(p)) {
+        setPlatform(p);
+      }
+    }
+    if (data.property_name) setPropertyName(data.property_name);
+    if (data.check_in) setIncidentDate(data.check_in);
+
+    // Build notes for description
+    const notes: string[] = [];
+    if (data.booking_id) notes.push(`Booking ID: ${data.booking_id}`);
+    if (data.check_in) notes.push(`Check-in: ${data.check_in}`);
+    if (data.check_out) notes.push(`Check-out: ${data.check_out}`);
+    if (data.num_guests) notes.push(`Guests: ${data.num_guests}`);
+    if (data.notes) notes.push(data.notes);
+
+    if (notes.length > 0 && !description) {
+      setDescription(notes.join("\n"));
+    }
+
+    // Add OCR screenshot as photo evidence
+    if (screenshotUrl && !photoUrls.includes(screenshotUrl)) {
+      setPhotoUrls((prev) => [...prev.slice(0, 2), screenshotUrl]);
+    }
+
+    toast("success", tOcr("importSuccess"));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -94,6 +130,7 @@ export default function NewReportPage() {
           description: description.trim(),
           property_name: propertyName.trim() || undefined,
           platform: platform || undefined,
+          photo_urls: photoUrls,
         }),
       });
 
@@ -122,11 +159,14 @@ export default function NewReportPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">{t("title")}</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {t("subtitle")}
-          </p>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">{t("title")}</h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              {t("subtitle")}
+            </p>
+          </div>
+          <OcrImport onImport={handleOcrImport} />
         </div>
 
         {error && (
@@ -274,6 +314,18 @@ export default function NewReportPage() {
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Photos Section */}
+              <div>
+                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                  {tUpload("title")}
+                </h2>
+                <PhotoUpload
+                  photos={photoUrls}
+                  onPhotosChange={setPhotoUrls}
+                  maxPhotos={3}
+                />
               </div>
 
               {/* Property & Platform Section */}

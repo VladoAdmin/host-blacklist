@@ -30,6 +30,7 @@ import {
   Flag,
   Pencil,
 } from "lucide-react";
+import PhotoGallery from "@/components/report/PhotoGallery";
 
 interface GuestData {
   id: string;
@@ -48,6 +49,7 @@ interface ReportData {
   description: string;
   property_name: string | null;
   platform: string;
+  photo_urls: string[];
   created_at: string;
   reporter: string;
   reporter_id: string;
@@ -211,6 +213,11 @@ function ReportCard({
                 </button>
               )}
             </div>
+          )}
+
+          {/* Photos */}
+          {report.photo_urls && report.photo_urls.length > 0 && (
+            <PhotoGallery photos={report.photo_urls} />
           )}
 
           <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">

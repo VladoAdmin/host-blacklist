@@ -28,6 +28,7 @@ import {
 import { toast } from "@/components/ui/toast";
 import { INCIDENT_TYPES, PLATFORMS, SEVERITY_LABELS } from "@/lib/constants";
 import { AlertTriangle, Loader2, Trash2, User } from "lucide-react";
+import PhotoUpload from "@/components/report/PhotoUpload";
 
 interface ReportData {
   id: string;
@@ -39,6 +40,7 @@ interface ReportData {
   description: string;
   property_name: string | null;
   platform: string | null;
+  photo_urls: string[] | null;
 }
 
 interface GuestInfo {
@@ -55,6 +57,7 @@ export default function EditReportPage() {
   const tPlatform = useTranslations("platforms");
   const tSeverity = useTranslations("severityLabels");
   const tCommon = useTranslations("common");
+  const tUpload = useTranslations("upload");
 
   const reportId = params.id as string;
 
@@ -70,6 +73,7 @@ export default function EditReportPage() {
   const [description, setDescription] = useState("");
   const [propertyName, setPropertyName] = useState("");
   const [platform, setPlatform] = useState("");
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
 
   const [submitting, setSubmitting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -117,6 +121,7 @@ export default function EditReportPage() {
         setDescription(r.description);
         setPropertyName(r.property_name || "");
         setPlatform(r.platform || "");
+        setPhotoUrls(r.photo_urls || []);
       } catch {
         setError(tCommon("error"));
       } finally {
@@ -153,6 +158,7 @@ export default function EditReportPage() {
           description: description.trim(),
           property_name: propertyName.trim() || undefined,
           platform: platform || undefined,
+          photo_urls: photoUrls,
         }),
       });
 
@@ -368,6 +374,18 @@ export default function EditReportPage() {
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Photos Section */}
+              <div>
+                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                  {tUpload("title")}
+                </h2>
+                <PhotoUpload
+                  photos={photoUrls}
+                  onPhotosChange={setPhotoUrls}
+                  maxPhotos={3}
+                />
               </div>
 
               {/* Booking Details */}
