@@ -55,7 +55,15 @@
     "continueWithFacebook": "Continue with Facebook",
     "redirecting": "Redirecting...",
     "confirmEmailDesc": "We sent a verification link to your email address. Click it to activate your account.",
-    "backToLogin": "Back to login"
+    "backToLogin": "Back to login",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "resetPasswordDesc": "Enter your email and we'll send you a password reset link.",
+    "resetEmailSent": "A password reset link has been sent to your email.",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "setNewPassword": "Set New Password",
+    "passwordChanged": "Your password has been changed successfully."
   },
   "nav": {
     "search": "Search",
@@ -244,10 +252,20 @@
     "placeholder": "Write a message...",
     "noMessages": "No messages yet. Be the first!",
     "loadMore": "Load more",
-    "deleteConfirm": "Are you sure you want to delete this message?",
     "likes": "Likes",
+    "like": "Like",
     "messageTooLong": "Message must be 500 characters or less.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "reply": "Reply",
+    "replyPlaceholder": "Write a reply...",
+    "replyingTo": "Replying to {name}",
+    "editMessage": "Edit",
+    "save": "Save",
+    "edited": "edited",
+    "justNow": "now",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
   },
   "suggestions": {
     "title": "Suggestions",

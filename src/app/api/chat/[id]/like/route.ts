@@ -19,7 +19,7 @@ export async function POST(
   // Check if message exists
   const { data: msg } = await supabase
     .from("chat_messages")
-    .select("id, likes_count")
+    .select("id")
     .eq("id", messageId)
     .single();
 
@@ -27,54 +27,21 @@ export async function POST(
     return NextResponse.json({ error: "Message not found" }, { status: 404 });
   }
 
-  // Check if already liked
-  const { data: existingLike } = await supabase
-    .from("chat_likes")
-    .select("id")
-    .eq("message_id", messageId)
-    .eq("user_id", user.id)
-    .maybeSingle();
+  // Use RPC function for atomic toggle
+  const { data, error } = await supabase.rpc("toggle_chat_like", {
+    p_message_id: messageId,
+  });
 
-  if (existingLike) {
-    // Unlike
-    await supabase
-      .from("chat_likes")
-      .delete()
-      .eq("id", existingLike.id);
-
-    // Decrement likes_count
-    await supabase
-      .from("chat_messages")
-      .update({ likes_count: Math.max(0, (msg.likes_count || 0) - 1) })
-      .eq("id", messageId);
-
-    return NextResponse.json({
-      liked: false,
-      likes_count: Math.max(0, (msg.likes_count || 0) - 1),
-    });
-  } else {
-    // Like
-    const { error: likeError } = await supabase
-      .from("chat_likes")
-      .insert({ message_id: messageId, user_id: user.id });
-
-    if (likeError) {
-      console.error("Like insert error:", likeError);
-      return NextResponse.json(
-        { error: "Failed to like message" },
-        { status: 500 }
-      );
-    }
-
-    // Increment likes_count
-    await supabase
-      .from("chat_messages")
-      .update({ likes_count: (msg.likes_count || 0) + 1 })
-      .eq("id", messageId);
-
-    return NextResponse.json({
-      liked: true,
-      likes_count: (msg.likes_count || 0) + 1,
-    });
+  if (error) {
+    console.error("Chat like RPC error:", error);
+    return NextResponse.json(
+      { error: "Failed to toggle like" },
+      { status: 500 }
+    );
   }
+
+  return NextResponse.json({
+    liked: data.liked,
+    likes_count: data.likes_count,
+  });
 }

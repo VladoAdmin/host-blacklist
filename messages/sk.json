@@ -55,7 +55,15 @@
     "continueWithFacebook": "Pokračovať cez Facebook",
     "redirecting": "Presmerovanie...",
     "confirmEmailDesc": "Na vašu emailovú adresu sme odoslali overovací odkaz. Kliknite naň pre aktiváciu účtu.",
-    "backToLogin": "Späť na prihlásenie"
+    "backToLogin": "Späť na prihlásenie",
+    "forgotPassword": "Zabudnuté heslo?",
+    "resetPassword": "Obnoviť heslo",
+    "resetPasswordDesc": "Zadajte email a pošleme vám odkaz na obnovu hesla.",
+    "resetEmailSent": "Odkaz na obnovu hesla bol odoslaný na váš email.",
+    "newPassword": "Nové heslo",
+    "confirmNewPassword": "Potvrďte nové heslo",
+    "setNewPassword": "Nastaviť nové heslo",
+    "passwordChanged": "Heslo bolo úspešne zmenené."
   },
   "nav": {
     "search": "Hľadať",
@@ -244,10 +252,20 @@
     "placeholder": "Napíšte správu...",
     "noMessages": "Zatiaľ žiadne správy. Buďte prvý!",
     "loadMore": "Načítať viac",
-    "deleteConfirm": "Naozaj chcete zmazať túto správu?",
     "likes": "Páči sa mi",
+    "like": "Páči sa mi",
     "messageTooLong": "Správa môže mať maximálne 500 znakov.",
-    "cancel": "Zrušiť"
+    "cancel": "Zrušiť",
+    "reply": "Odpovedať",
+    "replyPlaceholder": "Napíšte odpoveď...",
+    "replyingTo": "Odpoveď pre {name}",
+    "editMessage": "Upraviť",
+    "save": "Uložiť",
+    "edited": "upravené",
+    "justNow": "teraz",
+    "minutesAgo": "pred {count} min",
+    "hoursAgo": "pred {count} h",
+    "daysAgo": "pred {count} d"
   },
   "suggestions": {
     "title": "Návrhy",

@@ -105,6 +105,12 @@ function LoginForm() {
           <Button type="submit" className="w-full bg-sentinel-accent text-black hover:bg-amber-400 font-semibold" disabled={loading}>
             {loading ? t("signingIn") : t("signIn")}
           </Button>
+          <Link
+            href="/forgot-password"
+            className="text-sm text-sentinel-accent hover:underline"
+          >
+            {t("forgotPassword")}
+          </Link>
           <p className="text-sm text-sentinel-muted text-center">
             {t("noAccount")}{" "}
             <Link
