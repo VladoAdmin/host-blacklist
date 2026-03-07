@@ -11,6 +11,8 @@ interface Profile {
   city: string | null;
   country: string | null;
   properties_count: number;
+  nickname: string | null;
+  avatar_url: string | null;
 }
 
 export function useAuth() {

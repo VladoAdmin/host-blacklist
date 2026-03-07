@@ -60,6 +60,8 @@
   "nav": {
     "search": "Search",
     "dashboard": "Dashboard",
+    "chat": "Chat",
+    "suggestions": "Suggestions",
     "addReport": "Add Report",
     "settings": "Settings",
     "navigationMenu": "Navigation menu"
@@ -179,6 +181,11 @@
     "countryPlaceholder": "e.g. Slovakia",
     "propertiesCount": "Number of Properties",
     "propertiesCountHelp": "How many properties do you manage?",
+    "nickname": "Nickname",
+    "nicknamePlaceholder": "e.g. host_master",
+    "nicknameHelp": "Optional. Max 30 characters, letters, numbers, _ and - allowed. Displayed in chat and suggestions.",
+    "nicknameTooLong": "Nickname must be 30 characters or less.",
+    "nicknameInvalid": "Nickname can only contain letters, numbers, _ and -.",
     "saveChanges": "Save Changes",
     "saving": "Saving...",
     "updateSuccess": "Profile updated successfully!",
@@ -230,6 +237,37 @@
     "invalidType": "Only JPEG, PNG, and WebP images are allowed",
     "importSuccess": "Data imported from screenshot",
     "importPartial": "Some data could not be recognized"
+  },
+  "chat": {
+    "title": "Chat",
+    "sendMessage": "Send message",
+    "placeholder": "Write a message...",
+    "noMessages": "No messages yet. Be the first!",
+    "loadMore": "Load more",
+    "deleteConfirm": "Are you sure you want to delete this message?",
+    "likes": "Likes",
+    "messageTooLong": "Message must be 500 characters or less.",
+    "cancel": "Cancel"
+  },
+  "suggestions": {
+    "title": "Suggestions",
+    "newSuggestion": "New Suggestion",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "sortPopular": "Most Popular",
+    "sortNewest": "Newest",
+    "submit": "Submit",
+    "noSuggestions": "No suggestions yet. Add the first one!",
+    "statusOpen": "Open",
+    "statusPlanned": "Planned",
+    "statusDone": "Done",
+    "statusRejected": "Rejected",
+    "likes": "Likes",
+    "deleteConfirm": "Are you sure you want to delete this suggestion?",
+    "titleTooLong": "Title must be 100 characters or less.",
+    "descTooLong": "Description must be 1000 characters or less.",
+    "loadMore": "Load more",
+    "cancel": "Cancel"
   },
   "language": {
     "switchLanguage": "Language",

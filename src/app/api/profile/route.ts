@@ -14,7 +14,7 @@ export async function GET() {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, company_name, city, country, properties_count")
+    .select("id, full_name, company_name, city, country, properties_count, nickname, avatar_url")
     .eq("id", user.id)
     .single();
 
@@ -59,6 +59,37 @@ export async function PUT(request: Request) {
     );
   }
 
+  // Validate nickname
+  let nickname: string | null = null;
+  if (typeof body.nickname === "string" && body.nickname.trim()) {
+    nickname = body.nickname.trim();
+    if (nickname.length > 30) {
+      return NextResponse.json(
+        { error: "Nickname must be 30 characters or less" },
+        { status: 400 }
+      );
+    }
+    if (!/^[a-zA-Z0-9_-]+$/.test(nickname)) {
+      return NextResponse.json(
+        { error: "Nickname can only contain letters, numbers, _ and -" },
+        { status: 400 }
+      );
+    }
+    // Check uniqueness
+    const { data: existing } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("nickname", nickname)
+      .neq("id", user.id)
+      .maybeSingle();
+    if (existing) {
+      return NextResponse.json(
+        { error: "Nickname is already taken" },
+        { status: 409 }
+      );
+    }
+  }
+
   // Sanitize and validate properties_count
   const propertiesCount =
     typeof body.properties_count === "number" && body.properties_count >= 1
@@ -75,6 +106,7 @@ export async function PUT(request: Request) {
     country:
       typeof body.country === "string" ? body.country.trim() || null : null,
     properties_count: propertiesCount,
+    nickname,
     updated_at: new Date().toISOString(),
   };
 
@@ -82,7 +114,7 @@ export async function PUT(request: Request) {
     .from("profiles")
     .update(updateData)
     .eq("id", user.id)
-    .select("id, full_name, company_name, city, country, properties_count")
+    .select("id, full_name, company_name, city, country, properties_count, nickname, avatar_url")
     .single();
 
   if (error) {

@@ -24,6 +24,7 @@ export default function SettingsPage() {
   const t = useTranslations("settings");
 
   const [fullName, setFullName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
@@ -36,6 +37,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (profile && !formLoaded) {
       setFullName(profile.full_name || "");
+      setNickname(profile.nickname || "");
       setCompanyName(profile.company_name || "");
       setCity(profile.city || "");
       setCountry(profile.country || "");
@@ -53,6 +55,19 @@ export default function SettingsPage() {
       return;
     }
 
+    // Validate nickname client-side
+    const trimmedNickname = nickname.trim();
+    if (trimmedNickname) {
+      if (trimmedNickname.length > 30) {
+        setError(t("nicknameTooLong"));
+        return;
+      }
+      if (!/^[a-zA-Z0-9_-]+$/.test(trimmedNickname)) {
+        setError(t("nicknameInvalid"));
+        return;
+      }
+    }
+
     setSaving(true);
 
     try {
@@ -61,6 +76,7 @@ export default function SettingsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: fullName.trim(),
+          nickname: trimmedNickname || null,
           company_name: companyName.trim() || null,
           city: city.trim() || null,
           country: country.trim() || null,
@@ -147,6 +163,24 @@ export default function SettingsPage() {
                   autoComplete="name"
                   className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="nickname" className="text-sentinel-text">
+                  {t("nickname")}
+                </Label>
+                <Input
+                  id="nickname"
+                  type="text"
+                  placeholder={t("nicknamePlaceholder")}
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  maxLength={30}
+                  className="bg-sentinel-bg border-sentinel-border text-white placeholder:text-sentinel-muted"
+                />
+                <p className="text-xs text-sentinel-muted">
+                  {t("nicknameHelp")}
+                </p>
               </div>
 
               <div className="space-y-2">

@@ -16,6 +16,8 @@ import {
 import {
   Search,
   LayoutDashboard,
+  MessageSquare,
+  Lightbulb,
   FilePlus,
   Settings,
   LogOut,
@@ -29,6 +31,8 @@ import { routing } from "@/i18n/routing";
 const NAV_LINKS = [
   { href: "/search" as const, labelKey: "search" as const, icon: Search },
   { href: "/dashboard" as const, labelKey: "dashboard" as const, icon: LayoutDashboard },
+  { href: "/chat" as const, labelKey: "chat" as const, icon: MessageSquare },
+  { href: "/suggestions" as const, labelKey: "suggestions" as const, icon: Lightbulb },
   { href: "/report/new" as const, labelKey: "addReport" as const, icon: FilePlus },
   { href: "/settings" as const, labelKey: "settings" as const, icon: Settings },
 ];
@@ -93,7 +97,7 @@ export function Navbar() {
     router.refresh();
   };
 
-  const displayName = profile?.full_name || user.email || "User";
+  const displayName = profile?.nickname || profile?.full_name || user.email || "User";
   const strippedPath = stripLocale(pathname);
 
   return (

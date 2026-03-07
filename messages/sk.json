@@ -60,6 +60,8 @@
   "nav": {
     "search": "Hľadať",
     "dashboard": "Dashboard",
+    "chat": "Chat",
+    "suggestions": "Návrhy",
     "addReport": "Pridať hlásenie",
     "settings": "Nastavenia",
     "navigationMenu": "Navigačné menu"
@@ -179,6 +181,11 @@
     "countryPlaceholder": "napr. Slovensko",
     "propertiesCount": "Počet nehnuteľností",
     "propertiesCountHelp": "Koľko nehnuteľností spravujete?",
+    "nickname": "Prezývka",
+    "nicknamePlaceholder": "napr. host_master",
+    "nicknameHelp": "Voliteľné. Max 30 znakov, povolené písmená, čísla, _ a -. Zobrazuje sa v chate a návrhoch.",
+    "nicknameTooLong": "Prezývka môže mať maximálne 30 znakov.",
+    "nicknameInvalid": "Prezývka môže obsahovať len písmená, čísla, _ a -.",
     "saveChanges": "Uložiť zmeny",
     "saving": "Ukladanie...",
     "updateSuccess": "Profil bol úspešne aktualizovaný!",
@@ -230,6 +237,37 @@
     "invalidType": "Povolené sú len JPEG, PNG a WebP obrázky",
     "importSuccess": "Údaje boli importované zo screenshotu",
     "importPartial": "Niektoré údaje sa nepodarilo rozpoznať"
+  },
+  "chat": {
+    "title": "Chat",
+    "sendMessage": "Odoslať správu",
+    "placeholder": "Napíšte správu...",
+    "noMessages": "Zatiaľ žiadne správy. Buďte prvý!",
+    "loadMore": "Načítať viac",
+    "deleteConfirm": "Naozaj chcete zmazať túto správu?",
+    "likes": "Páči sa mi",
+    "messageTooLong": "Správa môže mať maximálne 500 znakov.",
+    "cancel": "Zrušiť"
+  },
+  "suggestions": {
+    "title": "Návrhy",
+    "newSuggestion": "Nový návrh",
+    "titleLabel": "Názov",
+    "descriptionLabel": "Popis",
+    "sortPopular": "Najpopulárnejšie",
+    "sortNewest": "Najnovšie",
+    "submit": "Odoslať",
+    "noSuggestions": "Zatiaľ žiadne návrhy. Pridajte prvý!",
+    "statusOpen": "Otvorený",
+    "statusPlanned": "Plánovaný",
+    "statusDone": "Hotový",
+    "statusRejected": "Zamietnutý",
+    "likes": "Páči sa mi",
+    "deleteConfirm": "Naozaj chcete zmazať tento návrh?",
+    "titleTooLong": "Názov môže mať maximálne 100 znakov.",
+    "descTooLong": "Popis môže mať maximálne 1000 znakov.",
+    "loadMore": "Načítať viac",
+    "cancel": "Zrušiť"
   },
   "language": {
     "switchLanguage": "Jazyk",
