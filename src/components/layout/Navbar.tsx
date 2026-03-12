@@ -20,6 +20,7 @@ import {
   Lightbulb,
   FilePlus,
   Settings,
+  HelpCircle,
   LogOut,
   Menu,
   Shield,
@@ -35,6 +36,7 @@ const NAV_LINKS = [
   { href: "/suggestions" as const, labelKey: "suggestions" as const, icon: Lightbulb },
   { href: "/report/new" as const, labelKey: "addReport" as const, icon: FilePlus },
   { href: "/settings" as const, labelKey: "settings" as const, icon: Settings },
+  { href: "/help" as const, labelKey: "help" as const, icon: HelpCircle },
 ];
 
 /** Routes where the navbar should NOT be shown (public pages). */
