@@ -16,29 +16,29 @@ export function SearchBar({ value, onChange, isLoading }: SearchBarProps) {
 
   return (
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-sentinel-muted" />
+      <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-sentinel-muted" />
       <Input
         type="text"
         placeholder={t("placeholder")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="pl-10 pr-10 h-11 text-base bg-sentinel-card border-sentinel-border text-white placeholder:text-sentinel-muted"
+        className="pl-12 pr-12 h-13 text-base bg-sentinel-card border-sentinel-border text-white placeholder:text-sentinel-muted rounded-xl focus:ring-2 focus:ring-sentinel-accent/50 focus:border-sentinel-accent transition-all duration-200"
         autoFocus
       />
       {value && !isLoading && (
         <Button
           variant="ghost"
           size="icon-xs"
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-sentinel-muted hover:text-white"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-sentinel-muted hover:text-white transition-colors duration-200"
           onClick={() => onChange("")}
           aria-label={t("clearSearch")}
         >
-          <X className="size-3.5" />
+          <X className="size-4" />
         </Button>
       )}
       {isLoading && (
-        <div className="absolute right-3 top-1/2 -translate-y-1/2">
-          <div className="size-4 animate-spin rounded-full border-2 border-sentinel-muted border-t-transparent" />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <div className="size-4 animate-spin rounded-full border-2 border-sentinel-muted border-t-sentinel-accent" />
         </div>
       )}
     </div>

@@ -37,29 +37,29 @@ export function GuestCard({ guest }: GuestCardProps) {
   const matchPercent = Math.round(guest.similarity_score * 100);
 
   return (
-    <Link href={`/guest/${guest.id}` as "/dashboard"} className="block">
-    <Card className="transition-colors hover:border-sentinel-accent/30 py-0 overflow-hidden cursor-pointer bg-sentinel-card border-sentinel-border">
-      <CardContent className="p-4">
+    <Link href={`/guest/${guest.id}` as "/dashboard"} className="block group">
+    <Card className="py-0 overflow-hidden cursor-pointer bg-sentinel-card border-sentinel-border card-hover rounded-2xl">
+      <CardContent className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 min-w-0">
-            <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-sentinel-border">
-              <User className="size-4 text-sentinel-muted" />
+            <div className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-sentinel-border/50 group-hover:bg-sentinel-accent/10 transition-colors duration-300">
+              <User className="size-4 text-sentinel-muted group-hover:text-sentinel-accent transition-colors duration-300" />
             </div>
             <div className="min-w-0">
-              <h3 className="font-semibold truncate text-white">{guest.full_name}</h3>
-              <div className="flex items-center gap-1.5 mt-0.5 text-sm text-sentinel-muted">
+              <h3 className="font-semibold truncate text-white group-hover:text-sentinel-accent transition-colors duration-200">{guest.full_name}</h3>
+              <div className="flex items-center gap-1.5 mt-1 text-sm text-sentinel-muted">
                 <Mail className="size-3 shrink-0" />
                 <span className="truncate">{guest.email}</span>
               </div>
               <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-sentinel-muted">
+                <span className="text-xs text-sentinel-muted/70">
                   {matchLabel} ({matchPercent}%)
                 </span>
               </div>
             </div>
           </div>
           <div
-            className={`flex items-center gap-1.5 shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium ${severityClasses}`}
+            className={`flex items-center gap-1.5 shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium ${severityClasses}`}
           >
             <AlertTriangle className="size-3" />
             {t("reportCount", { count: guest.reports_count })}

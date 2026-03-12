@@ -57,21 +57,24 @@ export default function SearchPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-sentinel-muted">{tCommon("loading")}</p>
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-8 animate-spin rounded-full border-2 border-sentinel-muted border-t-transparent" />
+          <p className="text-sm text-sentinel-muted">{tCommon("loading")}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-sentinel-surface">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-1 text-white">{t("title")}</h2>
-          <p className="text-sm text-sentinel-muted">
+    <div className="bg-sentinel-surface min-h-[calc(100vh-4rem)]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-white tracking-tight">{t("title")}</h2>
+          <p className="text-sm text-sentinel-muted leading-relaxed">
             {t("subtitle")}
           </p>
         </div>
-        <div className="mb-6">
+        <div className="mb-8">
           <SearchBar
             value={query}
             onChange={setQuery}

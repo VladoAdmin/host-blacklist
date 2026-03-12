@@ -37,9 +37,9 @@ function CustomTooltip({
   if (active && payload && payload.length > 0) {
     const entry = payload[0];
     return (
-      <div className="bg-sentinel-card border border-sentinel-border rounded-lg px-3 py-2 shadow-lg">
-        <p className="text-sm text-sentinel-muted">{formatDateLabel(entry.payload.date)}</p>
-        <p className="text-base font-semibold text-white">{entry.value}</p>
+      <div className="bg-sentinel-card border border-sentinel-border/50 rounded-xl px-4 py-2.5 shadow-xl shadow-black/30">
+        <p className="text-xs text-sentinel-muted">{formatDateLabel(entry.payload.date)}</p>
+        <p className="text-lg font-bold text-white">{entry.value}</p>
       </div>
     );
   }
@@ -51,15 +51,15 @@ export function TrendChart({ data, title }: TrendChartProps) {
   const yMax = Math.ceil(maxCount * 1.2) || 5;
 
   return (
-    <Card className="bg-sentinel-card border-sentinel-border">
+    <Card className="bg-sentinel-card border-sentinel-border rounded-2xl">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold text-white">{title}</CardTitle>
+        <CardTitle className="text-base font-semibold text-white tracking-tight">{title}</CardTitle>
       </CardHeader>
       <CardContent className="pb-4">
         <div className="h-[250px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2D2D3F" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#2D2D3F" strokeOpacity={0.5} />
               <XAxis
                 dataKey="date"
                 tickFormatter={formatDateLabel}
@@ -81,7 +81,7 @@ export function TrendChart({ data, title }: TrendChartProps) {
                 stroke="#F59E0B"
                 strokeWidth={2}
                 dot={false}
-                activeDot={{ r: 4, fill: "#F59E0B", stroke: "#0A0A0A", strokeWidth: 2 }}
+                activeDot={{ r: 5, fill: "#F59E0B", stroke: "#0A0A0A", strokeWidth: 2 }}
               />
             </LineChart>
           </ResponsiveContainer>

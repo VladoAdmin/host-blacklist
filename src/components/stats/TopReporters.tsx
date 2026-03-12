@@ -25,9 +25,9 @@ const RANK_COLORS = [
 
 export function TopReporters({ reporters, title, reportsLabel }: TopReportersProps) {
   return (
-    <Card className="bg-sentinel-card border-sentinel-border">
+    <Card className="bg-sentinel-card border-sentinel-border rounded-2xl h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold text-white">
+        <CardTitle className="flex items-center gap-2 text-base font-semibold text-white tracking-tight">
           <Trophy className="size-4 text-amber-400" />
           {title}
         </CardTitle>
@@ -38,7 +38,7 @@ export function TopReporters({ reporters, title, reportsLabel }: TopReportersPro
         ) : (
           <div className="space-y-3">
             {reporters.map((reporter, idx) => (
-              <div key={reporter.reporter_id} className="flex items-center gap-3">
+              <div key={reporter.reporter_id} className="flex items-center gap-3 p-2 rounded-xl hover:bg-sentinel-surface/50 transition-colors duration-200">
                 <span className={`text-lg font-bold w-6 text-center ${RANK_COLORS[idx] || RANK_COLORS[4]}`}>
                   {idx + 1}
                 </span>

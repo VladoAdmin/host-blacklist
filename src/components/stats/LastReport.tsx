@@ -53,9 +53,9 @@ export function LastReport({ report, title, incidentLabel }: LastReportProps) {
   const colorClass = INCIDENT_COLORS[report.incident_type] || INCIDENT_COLORS.other;
 
   return (
-    <Card className="bg-sentinel-card border-sentinel-border border-l-4 border-l-sentinel-accent">
+    <Card className="bg-sentinel-card border-sentinel-border border-l-4 border-l-sentinel-accent rounded-2xl card-hover">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold text-white">
+        <CardTitle className="flex items-center gap-2 text-base font-semibold text-white tracking-tight">
           <Clock className="size-4 text-sentinel-accent" />
           {title}
         </CardTitle>
@@ -64,7 +64,7 @@ export function LastReport({ report, title, incidentLabel }: LastReportProps) {
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
           <Link
             href={`/guest/${report.guest_id}` as "/dashboard"}
-            className="font-medium text-sentinel-accent hover:text-amber-400 hover:underline"
+            className="font-medium text-sentinel-accent hover:text-amber-400 hover:underline transition-colors duration-200"
           >
             {report.guest_name}
           </Link>
@@ -75,10 +75,10 @@ export function LastReport({ report, title, incidentLabel }: LastReportProps) {
             {timeAgo(report.created_at)}
           </span>
         </div>
-        <p className="text-sm text-sentinel-muted mt-1 line-clamp-2">
+        <p className="text-sm text-sentinel-muted mt-1.5 line-clamp-2 leading-relaxed">
           {report.description}
         </p>
-        <p className="text-xs text-sentinel-muted mt-1">
+        <p className="text-xs text-sentinel-muted/70 mt-1.5">
           by {report.reporter_name}
           {report.property_name ? ` · ${report.property_name}` : ""}
         </p>

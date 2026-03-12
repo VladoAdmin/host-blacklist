@@ -70,8 +70,8 @@ export function Navbar() {
   // While auth is loading, render a minimal placeholder to avoid layout shift
   if (loading) {
     return (
-      <header className="bg-sentinel-bg border-b border-sentinel-border">
-        <div className="max-w-6xl mx-auto px-4 h-14" />
+      <header className="glass border-b border-sentinel-border/30 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16" />
       </header>
     );
   }
@@ -79,11 +79,11 @@ export function Navbar() {
   // Not logged in on a protected route: show only logo
   if (!user) {
     return (
-      <header className="bg-sentinel-bg border-b border-sentinel-border">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2 text-xl font-bold text-white">
-            <Shield className="size-5 text-sentinel-accent" />
-            Sentinel HostGuard
+      <header className="glass border-b border-sentinel-border/30 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <Link href="/dashboard" className="flex items-center gap-2.5 text-xl font-bold text-white">
+            <Shield className="size-6 text-sentinel-accent" />
+            <span className="tracking-tight">Sentinel HostGuard</span>
           </Link>
           <LanguageSwitcher />
         </div>
@@ -101,16 +101,16 @@ export function Navbar() {
   const strippedPath = stripLocale(pathname);
 
   return (
-    <header className="bg-sentinel-bg border-b border-sentinel-border sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+    <header className="glass border-b border-sentinel-border/30 sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/dashboard" className="flex items-center gap-2 text-xl font-bold text-white shrink-0">
-          <Shield className="size-5 text-sentinel-accent" />
-          Sentinel HostGuard
+        <Link href="/dashboard" className="flex items-center gap-2.5 text-xl font-bold text-white shrink-0">
+          <Shield className="size-6 text-sentinel-accent" />
+          <span className="tracking-tight hidden sm:inline">Sentinel HostGuard</span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1 ml-8">
+        <nav className="hidden md:flex items-center gap-0.5 ml-8">
           {NAV_LINKS.map(({ href, labelKey, icon: Icon }) => {
             const isActive =
               strippedPath === href || strippedPath.startsWith(href + "/");
@@ -119,14 +119,17 @@ export function Navbar() {
                 key={href}
                 href={href}
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                  "relative inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-sentinel-card text-white"
-                    : "text-sentinel-muted hover:bg-sentinel-card/50 hover:text-white"
+                    ? "text-white bg-sentinel-card/80"
+                    : "text-sentinel-muted hover:text-white hover:bg-sentinel-card/40"
                 )}
               >
                 <Icon className="size-4" />
                 {t(labelKey)}
+                {isActive && (
+                  <span className="absolute -bottom-[13px] left-3 right-3 h-0.5 bg-sentinel-accent rounded-full" />
+                )}
               </Link>
             );
           })}
@@ -135,11 +138,17 @@ export function Navbar() {
         {/* Desktop user area */}
         <div className="hidden md:flex items-center gap-3 ml-auto">
           <LanguageSwitcher />
+          <div className="h-5 w-px bg-sentinel-border/50" />
           <span className="text-sm text-sentinel-muted truncate max-w-[160px]">
             {displayName}
           </span>
-          <Button variant="outline" size="sm" onClick={handleSignOut} className="border-sentinel-border text-sentinel-text hover:bg-sentinel-card">
-            <LogOut className="size-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleSignOut}
+            className="text-sentinel-muted hover:text-white hover:bg-sentinel-card/50 transition-all duration-200"
+          >
+            <LogOut className="size-4 mr-1.5" />
             {tAuth("signOut")}
           </Button>
         </div>
@@ -150,23 +159,32 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden text-white hover:bg-sentinel-card"
+              className="md:hidden text-white hover:bg-sentinel-card/50 h-10 w-10"
               aria-label={t("navigationMenu")}
             >
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 p-0 bg-sentinel-bg border-sentinel-border">
+          <SheetContent side="right" className="w-80 p-0 bg-sentinel-bg/95 backdrop-blur-xl border-sentinel-border/30">
             <SheetTitle className="sr-only">{t("navigationMenu")}</SheetTitle>
             <div className="flex flex-col h-full">
               {/* Mobile header */}
-              <div className="px-4 py-4 border-b border-sentinel-border">
-                <p className="font-semibold truncate text-white">{displayName}</p>
-                <p className="text-xs text-sentinel-muted truncate">{user.email}</p>
+              <div className="px-5 py-5 border-b border-sentinel-border/30">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-full bg-sentinel-accent/10">
+                    <span className="text-sm font-bold text-sentinel-accent">
+                      {displayName.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold truncate text-white text-sm">{displayName}</p>
+                    <p className="text-xs text-sentinel-muted truncate">{user.email}</p>
+                  </div>
+                </div>
               </div>
 
               {/* Mobile nav links */}
-              <nav className="flex-1 py-2">
+              <nav className="flex-1 py-3 px-2">
                 {NAV_LINKS.map(({ href, labelKey, icon: Icon }) => {
                   const isActive =
                     strippedPath === href || strippedPath.startsWith(href + "/");
@@ -176,34 +194,37 @@ export function Navbar() {
                       href={href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        "flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors",
+                        "flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 my-0.5",
                         isActive
                           ? "bg-sentinel-card text-white"
-                          : "text-sentinel-muted hover:bg-sentinel-card/50 hover:text-white"
+                          : "text-sentinel-muted hover:bg-sentinel-card/50 hover:text-white active:bg-sentinel-card"
                       )}
                     >
                       <Icon className="size-5" />
                       {t(labelKey)}
+                      {isActive && (
+                        <span className="ml-auto w-1.5 h-1.5 rounded-full bg-sentinel-accent" />
+                      )}
                     </Link>
                   );
                 })}
               </nav>
 
               {/* Language switcher + sign out */}
-              <div className="border-t border-sentinel-border p-4 space-y-3">
+              <div className="border-t border-sentinel-border/30 p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-sentinel-muted">Jazyk</span>
                   <LanguageSwitcher />
                 </div>
                 <Button
                   variant="outline"
-                  className="w-full border-sentinel-border text-sentinel-text hover:bg-sentinel-card"
+                  className="w-full border-sentinel-border/50 text-sentinel-text hover:bg-sentinel-card hover:border-sentinel-accent/30 transition-all duration-200 h-11"
                   onClick={() => {
                     setMobileOpen(false);
                     handleSignOut();
                   }}
                 >
-                  <LogOut className="size-4" />
+                  <LogOut className="size-4 mr-2" />
                   {tAuth("signOut")}
                 </Button>
               </div>
