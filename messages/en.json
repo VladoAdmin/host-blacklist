@@ -287,6 +287,16 @@
     "loadMore": "Load more",
     "cancel": "Cancel"
   },
+  "stats": {
+    "today": "Today",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "thisYear": "This Year",
+    "trendTitle": "Reports over the last 30 days",
+    "topReporters": "Top Reporters",
+    "lastReport": "Latest Report",
+    "reports": "reports"
+  },
   "language": {
     "switchLanguage": "Language",
     "sk": "Slovenčina",

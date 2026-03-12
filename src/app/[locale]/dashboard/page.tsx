@@ -8,7 +8,22 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { FileText, Users, Plus, Search, Pencil, ArrowRight } from "lucide-react";
+import {
+  FileText,
+  Users,
+  Plus,
+  Search,
+  Pencil,
+  ArrowRight,
+  CalendarDays,
+  CalendarRange,
+  CalendarClock,
+  Calendar,
+} from "lucide-react";
+import { StatsCard } from "@/components/stats/StatsCard";
+import { TrendChart } from "@/components/stats/TrendChart";
+import { TopReporters } from "@/components/stats/TopReporters";
+import { LastReport } from "@/components/stats/LastReport";
 
 // --- Shared helpers ---
 
@@ -51,12 +66,44 @@ interface DashboardReport {
   created_at: string;
 }
 
+interface LastGlobalReport {
+  id: string;
+  guest_id: string;
+  guest_name: string;
+  reporter_name: string;
+  incident_type: string;
+  incident_date: string | null;
+  severity: number;
+  description: string;
+  property_name: string | null;
+  platform: string | null;
+  created_at: string;
+}
+
+interface TopReporterData {
+  reporter_id: string;
+  full_name: string;
+  report_count: number;
+}
+
+interface TrendDataPoint {
+  date: string;
+  count: number;
+}
+
 interface DashboardData {
   my_reports: DashboardReport[];
   stats: {
     total_guests: number;
     my_reports_count: number;
+    reports_today: number;
+    reports_this_week: number;
+    reports_this_month: number;
+    reports_this_year: number;
   };
+  last_global_report: LastGlobalReport | null;
+  top_reporters: TopReporterData[];
+  trend_data: TrendDataPoint[];
 }
 
 // --- Skeleton loader ---
@@ -65,11 +112,18 @@ function DashboardSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
       <div className="h-8 w-64 bg-sentinel-card rounded" />
+      <div className="h-20 bg-sentinel-card rounded-lg" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-[76px] bg-sentinel-card rounded-lg" />
+        ))}
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-28 bg-sentinel-card rounded-lg" />
         ))}
       </div>
+      <div className="h-[300px] bg-sentinel-card rounded-lg" />
       <div className="h-12 bg-sentinel-card rounded-lg" />
       <div className="space-y-3">
         <div className="h-6 w-48 bg-sentinel-card rounded" />
@@ -91,6 +145,7 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const t = useTranslations("dashboard");
+  const tStats = useTranslations("stats");
   const tIncident = useTranslations("incidentTypes");
 
   useEffect(() => {
@@ -145,8 +200,18 @@ export default function DashboardPage() {
     );
   }
 
-  const stats = data?.stats ?? { total_guests: 0, my_reports_count: 0 };
+  const stats = data?.stats ?? {
+    total_guests: 0,
+    my_reports_count: 0,
+    reports_today: 0,
+    reports_this_week: 0,
+    reports_this_month: 0,
+    reports_this_year: 0,
+  };
   const reports = data?.my_reports ?? [];
+  const lastGlobalReport = data?.last_global_report ?? null;
+  const topReporters = data?.top_reporters ?? [];
+  const trendData = data?.trend_data ?? [];
 
   return (
     <div className="bg-sentinel-surface min-h-[calc(100vh-4rem)]">
@@ -156,7 +221,44 @@ export default function DashboardPage() {
           {t("welcomeBack", { name: profile?.full_name || "User" })}
         </h1>
 
-        {/* Stats cards */}
+        {/* Last global report highlight */}
+        <LastReport
+          report={lastGlobalReport}
+          title={tStats("lastReport")}
+          incidentLabel={(type) =>
+            tIncident(type as "damage" | "theft" | "noise" | "fraud" | "no_show" | "other")
+          }
+        />
+
+        {/* Period stats cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <StatsCard
+            label={tStats("today")}
+            value={stats.reports_today}
+            icon={CalendarDays}
+            colorClass="bg-emerald-500/15 text-emerald-400"
+          />
+          <StatsCard
+            label={tStats("thisWeek")}
+            value={stats.reports_this_week}
+            icon={CalendarRange}
+            colorClass="bg-blue-500/15 text-blue-400"
+          />
+          <StatsCard
+            label={tStats("thisMonth")}
+            value={stats.reports_this_month}
+            icon={CalendarClock}
+            colorClass="bg-purple-500/15 text-purple-400"
+          />
+          <StatsCard
+            label={tStats("thisYear")}
+            value={stats.reports_this_year}
+            icon={Calendar}
+            colorClass="bg-amber-500/15 text-amber-400"
+          />
+        </div>
+
+        {/* Original stats cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Card className="bg-sentinel-card border-sentinel-border">
             <CardContent className="flex items-center gap-4 p-6">
@@ -204,6 +306,20 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Trend chart + Top reporters side by side */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <TrendChart data={trendData} title={tStats("trendTitle")} />
+          </div>
+          <div>
+            <TopReporters
+              reporters={topReporters}
+              title={tStats("topReporters")}
+              reportsLabel={tStats("reports")}
+            />
+          </div>
         </div>
 
         {/* Quick search */}

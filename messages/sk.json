@@ -287,6 +287,16 @@
     "loadMore": "Načítať viac",
     "cancel": "Zrušiť"
   },
+  "stats": {
+    "today": "Dnes",
+    "thisWeek": "Tento týždeň",
+    "thisMonth": "Tento mesiac",
+    "thisYear": "Tento rok",
+    "trendTitle": "Záznamy za posledných 30 dní",
+    "topReporters": "Top reportéri",
+    "lastReport": "Posledný záznam",
+    "reports": "záznamov"
+  },
   "language": {
     "switchLanguage": "Jazyk",
     "sk": "Slovenčina",
