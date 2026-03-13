@@ -342,5 +342,18 @@
     "contact": "Contact",
     "contactEmail": "Email: support@sentinelhostguard.com",
     "contactSuggestions": "Have an idea for improvement? Use the"
+  },
+  "duplicates": {
+    "title": "Possible Duplicates Found",
+    "description": "We found existing guests that may match the person you are reporting. Please review before proceeding.",
+    "matchEmail": "Email match",
+    "matchPhone": "Phone match",
+    "matchName": "Similar name",
+    "reportSingle": "report",
+    "reportMultiple": "reports",
+    "similarity": "{score}% match",
+    "proceedAnyway": "Submit Anyway",
+    "submitting": "Submitting...",
+    "checking": "Checking for duplicates..."
   }
 }

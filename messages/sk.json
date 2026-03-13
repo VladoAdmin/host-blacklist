@@ -342,5 +342,18 @@
     "contact": "Kontakt",
     "contactEmail": "Email: support@sentinelhostguard.com",
     "contactSuggestions": "Máte nápad na zlepšenie? Použite"
+  },
+  "duplicates": {
+    "title": "Možné duplicity",
+    "description": "Našli sme existujúcich hostí, ktorí sa môžu zhodovať s osobou, ktorú nahlasujete. Skontrolujte pred odoslaním.",
+    "matchEmail": "Zhoda emailu",
+    "matchPhone": "Zhoda telefónu",
+    "matchName": "Podobné meno",
+    "reportSingle": "nahlásenie",
+    "reportMultiple": "nahlásení",
+    "similarity": "{score}% zhoda",
+    "proceedAnyway": "Odoslať napriek tomu",
+    "submitting": "Odosielam...",
+    "checking": "Kontrolujem duplicity..."
   }
 }

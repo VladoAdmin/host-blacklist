@@ -21,6 +21,9 @@ import { INCIDENT_TYPES, PLATFORMS, SEVERITY_LABELS } from "@/lib/constants";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import PhotoUpload from "@/components/report/PhotoUpload";
 import OcrImport, { type OcrResult } from "@/components/report/OcrImport";
+import DuplicateModal, {
+  type DuplicateGuest,
+} from "@/components/report/DuplicateModal";
 
 export default function NewReportPage() {
   const router = useRouter();
@@ -32,6 +35,7 @@ export default function NewReportPage() {
   const tCommon = useTranslations("common");
   const tUpload = useTranslations("upload");
   const tOcr = useTranslations("ocr");
+  const tDuplicates = useTranslations("duplicates");
 
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
@@ -45,6 +49,9 @@ export default function NewReportPage() {
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [duplicates, setDuplicates] = useState<DuplicateGuest[]>([]);
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+  const [checkingDuplicates, setCheckingDuplicates] = useState(false);
 
   if (!authLoading && !user) {
     router.push("/login?redirectTo=/report/new" as "/login");
@@ -93,29 +100,49 @@ export default function NewReportPage() {
     toast("success", tOcr("importSuccess"));
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function validateForm(): boolean {
     setError(null);
 
     if (!guestName.trim()) {
       setError(t("guestNameRequired"));
-      return;
+      return false;
     }
     if (!incidentType) {
       setError(t("incidentTypeRequired"));
-      return;
+      return false;
     }
     if (description.trim().length < 10) {
       setError(t("descriptionMinError"));
-      return;
+      return false;
     }
     if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) {
       setError(t("invalidEmail"));
-      return;
+      return false;
     }
+    return true;
+  }
 
+  async function checkDuplicates(): Promise<DuplicateGuest[]> {
+    try {
+      const res = await fetch("/api/guests/check-duplicates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          guest_name: guestName.trim(),
+          guest_email: guestEmail.trim() || undefined,
+          guest_phone: guestPhone.trim() || undefined,
+        }),
+      });
+      if (!res.ok) return [];
+      const data = await res.json();
+      return data.duplicates || [];
+    } catch {
+      return [];
+    }
+  }
+
+  async function submitReport() {
     setSubmitting(true);
-
     try {
       const res = await fetch("/api/reports", {
         method: "POST",
@@ -153,7 +180,25 @@ export default function NewReportPage() {
       setError(tCommon("error"));
     } finally {
       setSubmitting(false);
+      setShowDuplicateModal(false);
     }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setCheckingDuplicates(true);
+    const found = await checkDuplicates();
+    setCheckingDuplicates(false);
+
+    if (found.length > 0) {
+      setDuplicates(found);
+      setShowDuplicateModal(true);
+      return;
+    }
+
+    await submitReport();
   }
 
   return (
@@ -367,14 +412,16 @@ export default function NewReportPage() {
               <div className="pt-2">
                 <Button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || checkingDuplicates}
                   className="w-full bg-sentinel-accent text-black hover:bg-amber-400 font-semibold"
                   size="lg"
                 >
-                  {submitting ? (
+                  {submitting || checkingDuplicates ? (
                     <>
                       <Loader2 className="size-4 mr-2 animate-spin" />
-                      {t("submitting")}
+                      {checkingDuplicates
+                        ? tDuplicates("checking")
+                        : t("submitting")}
                     </>
                   ) : (
                     t("submitReport")
@@ -384,6 +431,14 @@ export default function NewReportPage() {
             </form>
           </CardContent>
         </Card>
+
+        <DuplicateModal
+          open={showDuplicateModal}
+          onOpenChange={setShowDuplicateModal}
+          duplicates={duplicates}
+          onProceed={submitReport}
+          loading={submitting}
+        />
       </div>
     </div>
   );
